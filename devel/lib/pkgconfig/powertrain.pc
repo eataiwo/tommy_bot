@@ -1,0 +1,8 @@
+prefix=/home/pi/Github/Dexter_ROS/devel
+
+Name: powertrain
+Description: Description of powertrain
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

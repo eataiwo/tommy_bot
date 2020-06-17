@@ -1,0 +1,2 @@
+powertrain
+-DCATKIN_DEVEL_PREFIX=/home/pi/Github/Dexter_ROS/devel -DCMAKE_INSTALL_PREFIX=/home/pi/Github/Dexter_ROS/install -G Unix Makefiles
