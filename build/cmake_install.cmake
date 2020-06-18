@@ -132,6 +132,7 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("/home/pi/Github/Dexter_ROS/build/gtest/cmake_install.cmake")
   include("/home/pi/Github/Dexter_ROS/build/powertrain/cmake_install.cmake")
+  include("/home/pi/Github/Dexter_ROS/build/webapp/cmake_install.cmake")
 
 endif()
 
