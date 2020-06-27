@@ -68,29 +68,6 @@ install/strip/fast: preinstall/fast
 	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
 .PHONY : install/strip/fast
 
-# Special rule for the target test
-test:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running tests..."
-	/usr/bin/ctest --force-new-ctest-process $(ARGS)
-.PHONY : test
-
-# Special rule for the target test
-test/fast: test
-
-.PHONY : test/fast
-
-# Special rule for the target install/local
-install/local: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
-	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
-.PHONY : install/local
-
-# Special rule for the target install/local
-install/local/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
-	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
-.PHONY : install/local/fast
-
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
@@ -115,7 +92,7 @@ rebuild_cache/fast: rebuild_cache
 
 # Special rule for the target list_install_components
 list_install_components:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\" \"main\""
 .PHONY : list_install_components
 
 # Special rule for the target list_install_components
@@ -134,6 +111,29 @@ install/fast: preinstall/fast
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
 	/usr/bin/cmake -P cmake_install.cmake
 .PHONY : install/fast
+
+# Special rule for the target test
+test:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running tests..."
+	/usr/bin/ctest --force-new-ctest-process $(ARGS)
+.PHONY : test
+
+# Special rule for the target test
+test/fast: test
+
+.PHONY : test/fast
+
+# Special rule for the target install/local
+install/local: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
+	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local
+
+# Special rule for the target install/local
+install/local/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
+	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -167,156 +167,6 @@ depend:
 	cd /home/pi/Github/Dexter_ROS/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
-# Convenience name for target.
-webapp/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/rule:
-	cd /home/pi/Github/Dexter_ROS/build && $(MAKE) -f CMakeFiles/Makefile2 webapp/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/rule
-.PHONY : webapp/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/rule
-
-# Convenience name for target.
-rosgraph_msgs_generate_messages_cpp: webapp/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/rule
-
-.PHONY : rosgraph_msgs_generate_messages_cpp
-
-# fast build rule for target.
-rosgraph_msgs_generate_messages_cpp/fast:
-	cd /home/pi/Github/Dexter_ROS/build && $(MAKE) -f webapp/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/build.make webapp/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/build
-.PHONY : rosgraph_msgs_generate_messages_cpp/fast
-
-# Convenience name for target.
-webapp/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/rule:
-	cd /home/pi/Github/Dexter_ROS/build && $(MAKE) -f CMakeFiles/Makefile2 webapp/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/rule
-.PHONY : webapp/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/rule
-
-# Convenience name for target.
-rosgraph_msgs_generate_messages_lisp: webapp/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/rule
-
-.PHONY : rosgraph_msgs_generate_messages_lisp
-
-# fast build rule for target.
-rosgraph_msgs_generate_messages_lisp/fast:
-	cd /home/pi/Github/Dexter_ROS/build && $(MAKE) -f webapp/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/build.make webapp/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/build
-.PHONY : rosgraph_msgs_generate_messages_lisp/fast
-
-# Convenience name for target.
-webapp/CMakeFiles/roscpp_generate_messages_py.dir/rule:
-	cd /home/pi/Github/Dexter_ROS/build && $(MAKE) -f CMakeFiles/Makefile2 webapp/CMakeFiles/roscpp_generate_messages_py.dir/rule
-.PHONY : webapp/CMakeFiles/roscpp_generate_messages_py.dir/rule
-
-# Convenience name for target.
-roscpp_generate_messages_py: webapp/CMakeFiles/roscpp_generate_messages_py.dir/rule
-
-.PHONY : roscpp_generate_messages_py
-
-# fast build rule for target.
-roscpp_generate_messages_py/fast:
-	cd /home/pi/Github/Dexter_ROS/build && $(MAKE) -f webapp/CMakeFiles/roscpp_generate_messages_py.dir/build.make webapp/CMakeFiles/roscpp_generate_messages_py.dir/build
-.PHONY : roscpp_generate_messages_py/fast
-
-# Convenience name for target.
-webapp/CMakeFiles/roscpp_generate_messages_nodejs.dir/rule:
-	cd /home/pi/Github/Dexter_ROS/build && $(MAKE) -f CMakeFiles/Makefile2 webapp/CMakeFiles/roscpp_generate_messages_nodejs.dir/rule
-.PHONY : webapp/CMakeFiles/roscpp_generate_messages_nodejs.dir/rule
-
-# Convenience name for target.
-roscpp_generate_messages_nodejs: webapp/CMakeFiles/roscpp_generate_messages_nodejs.dir/rule
-
-.PHONY : roscpp_generate_messages_nodejs
-
-# fast build rule for target.
-roscpp_generate_messages_nodejs/fast:
-	cd /home/pi/Github/Dexter_ROS/build && $(MAKE) -f webapp/CMakeFiles/roscpp_generate_messages_nodejs.dir/build.make webapp/CMakeFiles/roscpp_generate_messages_nodejs.dir/build
-.PHONY : roscpp_generate_messages_nodejs/fast
-
-# Convenience name for target.
-webapp/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/rule:
-	cd /home/pi/Github/Dexter_ROS/build && $(MAKE) -f CMakeFiles/Makefile2 webapp/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/rule
-.PHONY : webapp/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/rule
-
-# Convenience name for target.
-rosgraph_msgs_generate_messages_nodejs: webapp/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/rule
-
-.PHONY : rosgraph_msgs_generate_messages_nodejs
-
-# fast build rule for target.
-rosgraph_msgs_generate_messages_nodejs/fast:
-	cd /home/pi/Github/Dexter_ROS/build && $(MAKE) -f webapp/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/build.make webapp/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/build
-.PHONY : rosgraph_msgs_generate_messages_nodejs/fast
-
-# Convenience name for target.
-webapp/CMakeFiles/roscpp_generate_messages_lisp.dir/rule:
-	cd /home/pi/Github/Dexter_ROS/build && $(MAKE) -f CMakeFiles/Makefile2 webapp/CMakeFiles/roscpp_generate_messages_lisp.dir/rule
-.PHONY : webapp/CMakeFiles/roscpp_generate_messages_lisp.dir/rule
-
-# Convenience name for target.
-roscpp_generate_messages_lisp: webapp/CMakeFiles/roscpp_generate_messages_lisp.dir/rule
-
-.PHONY : roscpp_generate_messages_lisp
-
-# fast build rule for target.
-roscpp_generate_messages_lisp/fast:
-	cd /home/pi/Github/Dexter_ROS/build && $(MAKE) -f webapp/CMakeFiles/roscpp_generate_messages_lisp.dir/build.make webapp/CMakeFiles/roscpp_generate_messages_lisp.dir/build
-.PHONY : roscpp_generate_messages_lisp/fast
-
-# Convenience name for target.
-webapp/CMakeFiles/roscpp_generate_messages_cpp.dir/rule:
-	cd /home/pi/Github/Dexter_ROS/build && $(MAKE) -f CMakeFiles/Makefile2 webapp/CMakeFiles/roscpp_generate_messages_cpp.dir/rule
-.PHONY : webapp/CMakeFiles/roscpp_generate_messages_cpp.dir/rule
-
-# Convenience name for target.
-roscpp_generate_messages_cpp: webapp/CMakeFiles/roscpp_generate_messages_cpp.dir/rule
-
-.PHONY : roscpp_generate_messages_cpp
-
-# fast build rule for target.
-roscpp_generate_messages_cpp/fast:
-	cd /home/pi/Github/Dexter_ROS/build && $(MAKE) -f webapp/CMakeFiles/roscpp_generate_messages_cpp.dir/build.make webapp/CMakeFiles/roscpp_generate_messages_cpp.dir/build
-.PHONY : roscpp_generate_messages_cpp/fast
-
-# Convenience name for target.
-webapp/CMakeFiles/roscpp_generate_messages_eus.dir/rule:
-	cd /home/pi/Github/Dexter_ROS/build && $(MAKE) -f CMakeFiles/Makefile2 webapp/CMakeFiles/roscpp_generate_messages_eus.dir/rule
-.PHONY : webapp/CMakeFiles/roscpp_generate_messages_eus.dir/rule
-
-# Convenience name for target.
-roscpp_generate_messages_eus: webapp/CMakeFiles/roscpp_generate_messages_eus.dir/rule
-
-.PHONY : roscpp_generate_messages_eus
-
-# fast build rule for target.
-roscpp_generate_messages_eus/fast:
-	cd /home/pi/Github/Dexter_ROS/build && $(MAKE) -f webapp/CMakeFiles/roscpp_generate_messages_eus.dir/build.make webapp/CMakeFiles/roscpp_generate_messages_eus.dir/build
-.PHONY : roscpp_generate_messages_eus/fast
-
-# Convenience name for target.
-webapp/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/rule:
-	cd /home/pi/Github/Dexter_ROS/build && $(MAKE) -f CMakeFiles/Makefile2 webapp/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/rule
-.PHONY : webapp/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/rule
-
-# Convenience name for target.
-rosgraph_msgs_generate_messages_eus: webapp/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/rule
-
-.PHONY : rosgraph_msgs_generate_messages_eus
-
-# fast build rule for target.
-rosgraph_msgs_generate_messages_eus/fast:
-	cd /home/pi/Github/Dexter_ROS/build && $(MAKE) -f webapp/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/build.make webapp/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/build
-.PHONY : rosgraph_msgs_generate_messages_eus/fast
-
-# Convenience name for target.
-webapp/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/rule:
-	cd /home/pi/Github/Dexter_ROS/build && $(MAKE) -f CMakeFiles/Makefile2 webapp/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/rule
-.PHONY : webapp/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/rule
-
-# Convenience name for target.
-rosgraph_msgs_generate_messages_py: webapp/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/rule
-
-.PHONY : rosgraph_msgs_generate_messages_py
-
-# fast build rule for target.
-rosgraph_msgs_generate_messages_py/fast:
-	cd /home/pi/Github/Dexter_ROS/build && $(MAKE) -f webapp/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/build.make webapp/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/build
-.PHONY : rosgraph_msgs_generate_messages_py/fast
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -324,22 +174,12 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... install/strip"
-	@echo "... rosgraph_msgs_generate_messages_cpp"
-	@echo "... rosgraph_msgs_generate_messages_lisp"
-	@echo "... roscpp_generate_messages_py"
-	@echo "... roscpp_generate_messages_nodejs"
-	@echo "... rosgraph_msgs_generate_messages_nodejs"
-	@echo "... roscpp_generate_messages_lisp"
-	@echo "... roscpp_generate_messages_cpp"
-	@echo "... roscpp_generate_messages_eus"
-	@echo "... test"
-	@echo "... install/local"
-	@echo "... rosgraph_msgs_generate_messages_eus"
-	@echo "... rosgraph_msgs_generate_messages_py"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... list_install_components"
 	@echo "... install"
+	@echo "... test"
+	@echo "... install/local"
 .PHONY : help
 
 
