@@ -77,32 +77,34 @@ class Powertrain:
         self.remote_direction = ''
         self.speed = 50
         self.stepdelay = ''
-        
-        self.powertrain_speed_subscriber = rospy.Subscriber("/powertrain/speed", Float64, self.callback_set_speed)
-        self.powertrain_direction_subscriber = rospy.Subscriber("/powertrain/direction", String, self.callback_set_direction)
-        self.powertrain_drive_subscriber = rospy.Subscriber("/powertrain/drive", Bool, self.callback_set_drive, queue_size = 10)
-        
+
+        self.powertrain_speed_subscriber = rospy.Subscriber("/powertrain/speed", Float64, self.callback_set_speed,
+                                                            queue_size=10)
+        self.powertrain_direction_subscriber = rospy.Subscriber("/powertrain/direction", String,
+                                                                self.callback_set_direction, queue_size=10)
+        self.powertrain_drive_subscriber = rospy.Subscriber("/powertrain/drive", Bool, self.callback_set_drive,
+                                                            queue_size=10)
+
     def callback_set_speed(self, msg):
         self.speed = msg.data
-    
+
     def callback_set_direction(self, msg):
         self.remote_direction = msg.data
         rospy.loginfo(f'remote_direction = {self.remote_direction}')
-        
-    def callback_set_drive(self, msg): 
+
+    def callback_set_drive(self, msg):
         rospy.loginfo(msg)
         rospy.loginfo(f'set_drive message is {msg.data}')
-        if self.drive != True and msg.data == True:
+        if not self.drive and msg.data:
             self.drive = True
-            rospy.loginfo('Powertrain start triggered')
-            #self.remote()
-        elif msg.data == False:
+            # rospy.loginfo('Powertrain start triggered')
+            # self.remote()
+        elif not msg.data:
             rospy.loginfo('Powertrain stop triggered')
             self.drive = False
             GPIO.output(self.step_pins, False)
             GPIO.output(self.direction_pins, False)
-        
-        
+
     def go(self, direction, distance, speed=0, initdelay=.05, verbose=False):
         """
         Moves Dexter based on desired direction, speed and distance.
@@ -184,7 +186,6 @@ class Powertrain:
         self.direction = direction
         GPIO.output(self.direction_pins, directions[direction])
         sleep(initdelay)
-        
 
         try:
             for i in range(steps):
@@ -217,9 +218,7 @@ class Powertrain:
         """
         Moves Dexter based on desired direction from web application.
 
-        :param speed: Steps stepper motor should turn.
         :param verbose: Prints information related to motor movement
-        :type speed: int, float
         :type verbose: bool
         """
 
@@ -227,7 +226,7 @@ class Powertrain:
             self.speed = 0
         elif self.speed > 100:
             self.speed = 100
-        
+
         rospy.loginfo('go_step activated')
         while self.drive:
             self.go_steps(self.remote_direction, 1, percent_to_stepdelay(self.speed), 0, verbose)
@@ -249,25 +248,26 @@ class Powertrain:
         GPIO.setup(self.direction_pins, GPIO.OUT)
         GPIO.setup(self.step_pins, GPIO.OUT)
 
+
 if __name__ == "__main__":
     rospy.init_node('powertrain')
-    
-    # TODO: Add these as ROS paramaters 
+
+    # TODO: Add these as ROS parameters
     direction_pins = (27, 23, 19, 20)
     step_pins = (22, 24, 26, 21)
-    
+
     dexter = Powertrain(direction_pins, step_pins)
     dexter.setup()
-    
+
+    rospy.spin()
+
     while not rospy.is_shutdown():
+        rospy.spinOnce()
         if dexter.drive:
             if 0 > dexter.speed:
                 dexter.speed = 0
             elif dexter.speed > 100:
                 dexter.speed = 100
             dexter.go_steps(dexter.remote_direction, 1, percent_to_stepdelay(dexter.speed), 0)
-            rospy.loginfo(f'self.speed ={dexter.speed}')
+            rospy.loginfo(f'Self.speed ={dexter.speed}')
             rospy.loginfo('go_step activated')
-    
-    
-    #rospy.spin()
