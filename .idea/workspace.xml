@@ -20,17 +20,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8721ce3d-f5cf-4215-8250-19be014edc55" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/Dexter_ros.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/powertrain/src/powertrain_demo_pub.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/powertrain/src/powertrain.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/powertrain/src/powertrain.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/powertrain/src/powertrain_demo.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/powertrain/src/powertrain_demo_sub.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/webapp/src/remote_control_webapp.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/webapp/src/remote_control_webapp.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -57,6 +63,14 @@
       <option name="presentableId" value="Default" />
       <updated>1593275749650</updated>
     </task>
+    <task id="LOCAL-00001" summary="Update &quot;Trying to fix issue with wheels not turning in sync&quot;">
+      <created>1593283564523</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1593283564523</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -69,5 +83,16 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Update &quot;Trying to fix issue with wheels not turning in sync&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update &quot;Trying to fix issue with wheels not turning in sync&quot;" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="320" y="190" key="Vcs.Push.Dialog.v2" timestamp="1593283565847">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="320" y="190" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1593283565847" />
   </component>
 </project>
