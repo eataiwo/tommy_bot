@@ -13,7 +13,7 @@ direction_publisher = rospy.Publisher('/powertrain/direction', String, queue_siz
 drive_publisher = rospy.Publisher('/powertrain/drive', Bool, queue_size=10)
 
 speed_msg = Float64()
-speed_msg.data = 50
+speed_msg.data = 80
 direction_msg = String()
 drive_msg = Bool()
 drive_msg.data = False
@@ -51,9 +51,9 @@ def reroute(changepin):
     elif changepin == 7:
         direction_msg.data = 'tots_ccw'
     elif changepin == 8:
-        speed_msg.data = 50
+        speed_msg.data -= 5
     elif changepin == 9:
-        speed_msg.data = 50
+        speed_msg.data += 5
     else:
         print("Wrong command")
         
@@ -61,8 +61,7 @@ def reroute(changepin):
     speed_publisher.publish(speed_msg)
     if not drive_msg.data and changepin != 5:
         drive_msg.data = True
-        drive_publisher.publish(drive_msg)
-    rospy.loginfo(f'drive is = {drive_msg.data} and changepin is {changepin}')    
+        drive_publisher.publish(drive_msg)   
     response = make_response(redirect(url_for('index')))
     return response
 

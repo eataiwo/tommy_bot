@@ -76,7 +76,7 @@ class Powertrain:
         self.drive = False
         self.direction = ''
         self.remote_direction = ''
-        self.speed = 50
+        self.speed = 80
         self.stepdelay = ''
 
         self.powertrain_speed_subscriber = rospy.Subscriber("/powertrain/speed", Float64, self.callback_set_speed,
@@ -91,17 +91,11 @@ class Powertrain:
 
     def callback_set_direction(self, msg):
         self.remote_direction = msg.data
-        rospy.loginfo(f'remote_direction = {self.remote_direction}')
 
     def callback_set_drive(self, msg):
-        rospy.loginfo(msg)
-        rospy.loginfo(f'set_drive message is {msg.data}')
         if not self.drive and msg.data:
             self.drive = True
-            # rospy.loginfo('Powertrain start triggered')
-            # self.remote()
         elif not msg.data:
-            rospy.loginfo('Powertrain stop triggered')
             self.drive = False
             GPIO.output(self.step_pins, False)
             GPIO.output(self.direction_pins, False)
@@ -186,7 +180,7 @@ class Powertrain:
 
         self.direction = direction
         GPIO.output(self.direction_pins, directions[direction])
-        sleep(initdelay)
+        #rospy.sleep(initdelay)
 
         try:
             for i in range(steps):
@@ -204,8 +198,6 @@ class Powertrain:
             print("Powertrain.go_steps(): Unexpected error:")
         else:
             if verbose:
-                rospy.loginfo(f'Direction = {self.remote_direction}')
-                rospy.loginfo(f'Steps = {steps}')
                 print(f'Direction = {direction}')
                 print(f'Number of steps = {steps}')
                 print(f'Step Delay = {stepdelay}')
@@ -228,7 +220,6 @@ class Powertrain:
         elif self.speed > 100:
             self.speed = 100
 
-        rospy.loginfo('go_step activated')
         while self.drive:
             self.go_steps(self.remote_direction, 1, percent_to_stepdelay(self.speed), 0, verbose)
 
@@ -260,15 +251,11 @@ if __name__ == "__main__":
     dexter = Powertrain(direction_pins, step_pins)
     dexter.setup()
 
-    rospy.spin()
-
-    while not rospy.is_shutdown():
-        rospy.spinOnce()
-        if dexter.drive:
+    while True:
+        while dexter.drive:
             if 0 > dexter.speed:
                 dexter.speed = 0
             elif dexter.speed > 100:
                 dexter.speed = 100
             dexter.go_steps(dexter.remote_direction, 1, percent_to_stepdelay(dexter.speed), 0)
-            rospy.loginfo(f'Self.speed ={dexter.speed}')
-            rospy.loginfo('go_step activated')
+            #dexter.go('forward', 0.1, 73.53, 0)
