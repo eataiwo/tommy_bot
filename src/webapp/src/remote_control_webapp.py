@@ -3,6 +3,7 @@
 import RPi.GPIO as GPIO
 import socket
 import rospy
+import signal, sys
 from flask import Flask, render_template, request, redirect, url_for, make_response
 from std_msgs.msg import Float64, String, Bool
 
@@ -65,5 +66,10 @@ def reroute(changepin):
     response = make_response(redirect(url_for('index')))
     return response
 
+def signal_handler(signal, frame):
+    rospy.signal_shutdown("end")
+    sys.exit(0)
+    
+signal.signal(signal.SIGINT,signal_handler)
 
 app.run(debug=True, host='0.0.0.0', port=8000)

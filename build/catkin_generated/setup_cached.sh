@@ -7,5 +7,4 @@
 # new environment variables
 
 # modified environment variables
-export PATH="/opt/ros/noetic/bin:/home/pi/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games"
 export PWD="/home/pi/Github/Dexter_ROS/build"
