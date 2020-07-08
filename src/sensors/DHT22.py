@@ -30,23 +30,29 @@ from time import sleep
 from std_msgs.msg import Float64
 
 SENSOR_PIN = 13
+temp_msg = Float64()
+hum_msg = Float64()
 
 
 class Dht22:
     def __init__(self, pin=SENSOR_PIN):
         self._sensor = Adafruit_DHT.DHT22
         self._pin = pin
+        self.temp_pub = rospy.Publisher('sensors/temperature', Float64, queue_size=10)
+        self.hum_pub = rospy.Publisher('sensors/humidity', Float64, queue_size=10)
 
     def read(self):
-        humidity, temperature = Adafruit_DHT.read_retry(self._sensor, self._pin)
+        humidity, temperature = Adafruit_DHT.read_retry(Adafruit_DHT.DHT22, self._pin)
         if humidity is None or temperature is None:
             raise ValueError("Can't read DHT")
         return humidity, temperature
 
 
 if __name__ == "__main__":
-    while True:
+    rospy.init_node('sensors/dht22')
+    while not rospy.is_shutdown():
         dht22 = Dht22()
-        humidity, temperature = dht22.read()
-        print("%.2f %.2f" % (humidity, temperature))
-        sleep(3)
+        hum_msg.data, temp_msg.data = dht22.read()
+        dht22.hum_pub.publish(hum_msg)
+        dht22.temp_pub.publish(hum_msg)
+        rospy.sleep(5)
