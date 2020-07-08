@@ -258,4 +258,3 @@ if __name__ == "__main__":
             elif dexter.speed > 100:
                 dexter.speed = 100
             dexter.go_steps(dexter.remote_direction, 1, percent_to_stepdelay(dexter.speed), 0)
-            #dexter.go('forward', 0.1, 73.53, 0)
