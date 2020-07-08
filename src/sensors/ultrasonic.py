@@ -14,6 +14,9 @@ GPIO_ECHO = 16
 GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
 GPIO.setup(GPIO_ECHO, GPIO.IN)
 
+air_temp = 25
+c = 331.3 + 0.606*air_temp
+
 
 def distance():
     # set Trigger to HIGH
@@ -38,7 +41,7 @@ def distance():
     TimeElapsed = StopTime - StartTime
     # multiply with the sonic speed (34300 cm/s)
     # and divide by 2, because there and back
-    distance = (TimeElapsed * 34300) / 2
+    distance = (TimeElapsed * c * 100) / 2 #cm
 
     return distance
 
