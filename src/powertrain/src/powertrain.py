@@ -63,7 +63,7 @@ class Powertrain:
         Setup for the powertrain
     """
 
-    def __init__(self, direction_pins, step_pins):
+    def __init__(self, direction_pins, step_pins, enable_pin):
         """
         :param direction_pins: GPIO pins connected to the direction pin on the stepper motor driver
         :param step_pins: GPIO pins connected to the step pin on the stepper motor driver
@@ -176,7 +176,7 @@ class Powertrain:
                 GPIO.output(self.step_pins, False)
                 GPIO.output(self.direction_pins, False)
                 if self.pwr_save:
-                    GPIO.output(self.enable, True)
+                    GPIO.output(self.enable_pin, True)
 
     def go_steps(self, direction='forward', steps=100, stepdelay=.05, initdelay=.05, verbose=False):
         """
@@ -224,7 +224,7 @@ class Powertrain:
                 # cleanup
                 GPIO.output(self.step_pins, False)
                 GPIO.output(self.direction_pins, False)
-                GPIO.output(self.enable, True)
+                GPIO.output(self.enable_pin, True)
 
 
     def remote(self, verbose=False):
@@ -259,6 +259,7 @@ class Powertrain:
         GPIO.setwarnings(False)
         GPIO.setup(self.direction_pins, GPIO.OUT)
         GPIO.setup(self.step_pins, GPIO.OUT)
+        GPIO.setup(self.enable_pin, GPIO.OUT)
 
 
 if __name__ == "__main__":
@@ -274,7 +275,7 @@ if __name__ == "__main__":
 
     while True:
         if dexter.pwr_save:
-            GPIO.output(self.enable, True)
+            GPIO.output(dexter.enable_pin, True)
         else:
             GPIO.output(self.enable, False)
         while dexter.drive and (not dexter.obstacle and dexter.remote_direction != 'forward'):
