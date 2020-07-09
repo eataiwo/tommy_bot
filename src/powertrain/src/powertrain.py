@@ -78,6 +78,7 @@ class Powertrain:
         self.remote_direction = ''
         self.speed = 80
         self.stepdelay = ''
+        self.obstacle = False
 
         self.powertrain_speed_subscriber = rospy.Subscriber("/powertrain/speed", Float64, self.callback_set_speed,
                                                             queue_size=10)
@@ -85,6 +86,8 @@ class Powertrain:
                                                                 self.callback_set_direction, queue_size=10)
         self.powertrain_drive_subscriber = rospy.Subscriber("/powertrain/drive", Bool, self.callback_set_drive,
                                                             queue_size=10)
+        self.powertrain_obstacle_subscriber = rospy.Subscriber("/sensor/ranging_FC", Float64,
+                                                               self.callback_detect_obstacle, queue_size=10)
 
     def callback_set_speed(self, msg):
         self.speed = msg.data
@@ -99,6 +102,12 @@ class Powertrain:
             self.drive = False
             GPIO.output(self.step_pins, False)
             GPIO.output(self.direction_pins, False)
+
+    def callback_detect_obstacle(self, msg):
+        if msg.data < 10:
+            self.obstacle = True
+        else:
+            self.obstacle = False
 
     def go(self, direction, distance, speed=0, initdelay=.05, verbose=False):
         """
@@ -136,31 +145,32 @@ class Powertrain:
 
         sleep(initdelay)
 
-        try:
-            for i in range(steps):
-                GPIO.output(self.step_pins, True)
-                sleep(stepdelay)
-                GPIO.output(self.step_pins, False)
-                sleep(stepdelay)
+        if not self.obstacle:
+            try:
+                for i in range(steps):
+                    GPIO.output(self.step_pins, True)
+                    sleep(stepdelay)
+                    GPIO.output(self.step_pins, False)
+                    sleep(stepdelay)
+                    if verbose:
+                        print(f'Steps count {i}')
+            except KeyboardInterrupt:
+                print('User Keyboard Interrupt @ Powertrain.go()')
+            except Exception as motor_error:
+                print(sys.exc_info()[0])
+                print(motor_error)
+                print("Powertrain.go(): Unexpected error:")
+            else:
                 if verbose:
-                    print(f'Steps count {i}')
-        except KeyboardInterrupt:
-            print('User Keyboard Interrupt @ Powertrain.go()')
-        except Exception as motor_error:
-            print(sys.exc_info()[0])
-            print(motor_error)
-            print("Powertrain.go(): Unexpected error:")
-        else:
-            if verbose:
-                print(f'Direction = {direction}')
-                print(f'Number of steps = {steps}')
-                print(f'Speed = {speed}')
-                print(f'Step Delay = {stepdelay}')
-                print(f'Initial delay = {initdelay}')
-        finally:
-            # cleanup
-            GPIO.output(self.step_pins, False)
-            GPIO.output(self.direction_pins, False)
+                    print(f'Direction = {direction}')
+                    print(f'Number of steps = {steps}')
+                    print(f'Speed = {speed}')
+                    print(f'Step Delay = {stepdelay}')
+                    print(f'Initial delay = {initdelay}')
+            finally:
+                # cleanup
+                GPIO.output(self.step_pins, False)
+                GPIO.output(self.direction_pins, False)
 
     def go_steps(self, direction='forward', steps=100, stepdelay=.05, initdelay=.05, verbose=False):
         """
@@ -180,32 +190,33 @@ class Powertrain:
 
         self.direction = direction
         GPIO.output(self.direction_pins, directions[direction])
-        #rospy.sleep(initdelay)
+        # rospy.sleep(initdelay)
 
-        try:
-            for i in range(steps):
-                GPIO.output(self.step_pins, True)
-                sleep(stepdelay)
-                GPIO.output(self.step_pins, False)
-                sleep(stepdelay)
+        if not self.obstacle:
+            try:
+                for i in range(steps):
+                    GPIO.output(self.step_pins, True)
+                    sleep(stepdelay)
+                    GPIO.output(self.step_pins, False)
+                    sleep(stepdelay)
+                    if verbose:
+                        print(f'Steps count {i}')
+            except KeyboardInterrupt:
+                print('User Keyboard Interrupt @ Powertrain.go_steps()')
+            except Exception as motor_error:
+                print(sys.exc_info()[0])
+                print(motor_error)
+                print("Powertrain.go_steps(): Unexpected error:")
+            else:
                 if verbose:
-                    print(f'Steps count {i}')
-        except KeyboardInterrupt:
-            print('User Keyboard Interrupt @ Powertrain.go_steps()')
-        except Exception as motor_error:
-            print(sys.exc_info()[0])
-            print(motor_error)
-            print("Powertrain.go_steps(): Unexpected error:")
-        else:
-            if verbose:
-                print(f'Direction = {direction}')
-                print(f'Number of steps = {steps}')
-                print(f'Step Delay = {stepdelay}')
-                print(f'Initial delay = {initdelay}')
-        finally:
-            # cleanup
-            GPIO.output(self.step_pins, False)
-            GPIO.output(self.direction_pins, False)
+                    print(f'Direction = {direction}')
+                    print(f'Number of steps = {steps}')
+                    print(f'Step Delay = {stepdelay}')
+                    print(f'Initial delay = {initdelay}')
+            finally:
+                # cleanup
+                GPIO.output(self.step_pins, False)
+                GPIO.output(self.direction_pins, False)
 
     def remote(self, verbose=False):
         """
@@ -252,7 +263,7 @@ if __name__ == "__main__":
     dexter.setup()
 
     while True:
-        while dexter.drive:
+        while dexter.drive and not dexter.obstacle:
             if 0 > dexter.speed:
                 dexter.speed = 0
             elif dexter.speed > 100:
