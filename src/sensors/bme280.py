@@ -14,11 +14,10 @@ See https: // github.com/sensemakersamsterdam/astroplant_explorer
 #
 # Adapted for Astroplant Explorer framework by: Ted van der Togt, Gijs Mos
 #
-
-import time
+from time import sleep
 import smbus
 import rospy
-from std_msgs.msg import Float
+from std_msgs.msg import Float64
 
 DEBUG = 0  # Normally on 0. Non zero enable debug code/exceptions
 
@@ -191,7 +190,7 @@ class Bme280:
 if __name__ == '__main__':
     bme280 = Bme280()
     bme280.setup()
-    while true:
+    while True:
         result = bme280.values()
         print(result)
         sleep(2)

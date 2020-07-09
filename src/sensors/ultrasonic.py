@@ -2,9 +2,12 @@
 
 import RPi.GPIO as GPIO
 import time
+import rospy
+from std_msgs.msg import Float64
 
 # GPIO Mode (BOARD / BCM)
 GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
 
 # set GPIO Pins
 GPIO_TRIGGER = 18
@@ -20,8 +23,8 @@ class Hcsr04:
     def __init__(self, trigger=GPIO_TRIGGER, echo=GPIO_ECHO):
         self._trigger = trigger
         self._echo = echo
-        self.air_temp = None
-        self.hum = None
+        self.air_temp = 25 # default initial value
+        self.hum = 50 # default initial value
         # Ensure this is the ambient temperature not the air temperature inside Dexter
         self.temp_sub = rospy.Subscriber("sensors/temperature", Float64, self.cb_update_air_temp, queue_size=10)
         self.hum_sub = rospy.Subscriber("sensors/humidity", Float64, self.cb_update_hum, queue_size=10)
@@ -50,8 +53,6 @@ class Hcsr04:
         TimeElapsed = StopTime - StartTime
         # multiply with the sonic speed (34300 cm/s)
         # and divide by 2, because there and back
-        if self.air_temp is None or self.hum is None:
-            rospy.sleep(10)
         c = 331.3 + (0.606 * self.air_temp) + (0.0124 * self.hum)  # speed of sound
         distance = (TimeElapsed * c * 100) / 2  # cm
 
@@ -65,16 +66,20 @@ class Hcsr04:
 
 
 if __name__ == '__main__':
-    rospy.init_node(ultrasonic)
-    rospy.Rate(10)
+    rospy.init_node('ultrasonic_ranging')
+    rate = rospy.Rate(16)
     hcsr04 = Hcsr04()
 
-    try:
-        range_msg.data = hcsr04.distance()
-    except Exception as error:
-        print(error)
-        GPIO.cleanup()
+    
+    while not rospy.is_shutdown():
+            try:
+                range_msg.data = hcsr04.distance()
+                hcsr04.range_pub.publish(range_msg)
+                rate.sleep()
+            except Exception as error:
+                print(error)
+                GPIO.cleanup()
 
-    hcsr04.range_pub.publish(range_msg)
+
 
 
