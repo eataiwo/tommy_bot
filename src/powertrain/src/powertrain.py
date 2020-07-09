@@ -73,12 +73,14 @@ class Powertrain:
 
         self.direction_pins = direction_pins
         self.step_pins = step_pins
+        self.enable_pin = enable_pin
         self.drive = False
         self.direction = ''
         self.remote_direction = ''
         self.speed = 80
         self.stepdelay = ''
         self.obstacle = False
+        self.pwr_save = True
 
         self.powertrain_speed_subscriber = rospy.Subscriber("/powertrain/speed", Float64, self.callback_set_speed,
                                                             queue_size=10)
@@ -127,7 +129,9 @@ class Powertrain:
 
         self.direction = direction
         self.speed = speed
+        GPIO.output(self.enable, False)
         GPIO.output(self.direction_pins, directions[direction])
+
 
         # Prevent user selecting speeds outside of the limits
         if 0 > speed:
@@ -171,6 +175,8 @@ class Powertrain:
                 # cleanup
                 GPIO.output(self.step_pins, False)
                 GPIO.output(self.direction_pins, False)
+                if self.pwr_save:
+                    GPIO.output(self.enable, True)
 
     def go_steps(self, direction='forward', steps=100, stepdelay=.05, initdelay=.05, verbose=False):
         """
@@ -189,6 +195,7 @@ class Powertrain:
         """
 
         self.direction = direction
+        GPIO.output(self.enable, False)
         GPIO.output(self.direction_pins, directions[direction])
         # rospy.sleep(initdelay)
 
@@ -217,6 +224,8 @@ class Powertrain:
                 # cleanup
                 GPIO.output(self.step_pins, False)
                 GPIO.output(self.direction_pins, False)
+                GPIO.output(self.enable, True)
+
 
     def remote(self, verbose=False):
         """
@@ -258,12 +267,17 @@ if __name__ == "__main__":
     # TODO: Add these as ROS parameters
     direction_pins = (27, 23, 19, 20)
     step_pins = (22, 24, 26, 21)
+    enable_pin = 6
 
-    dexter = Powertrain(direction_pins, step_pins)
+    dexter = Powertrain(direction_pins, step_pins, enable_pin)
     dexter.setup()
 
     while True:
-        while dexter.drive and not dexter.obstacle:
+        if dexter.pwr_save:
+            GPIO.output(self.enable, True)
+        else:
+            GPIO.output(self.enable, False)
+        while dexter.drive and (not dexter.obstacle and dexter.remote_direction != 'forward'):
             if 0 > dexter.speed:
                 dexter.speed = 0
             elif dexter.speed > 100:
