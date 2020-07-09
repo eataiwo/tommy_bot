@@ -16,7 +16,7 @@ import rospy
 from time import sleep
 from std_msgs.msg import String
 
-I2C_ADDR = 0x38  # default I2C device address
+I2C_ADDR = 0x27  # default I2C device address
 I2C_BUS = 1  # default I2C bus on Pi
 LCD_WIDTH = 16  # Maximum characters per line
 
@@ -56,8 +56,8 @@ class Lcd:
         self._bus = None
         self._n_err = 0
         self._backlight = None
-        self.lcd_sub = rospy.Subscriber("/lcd_display/line1", Float64, self.cb_display_line1, queue_size=10)
-        self.lcd_sub = rospy.Subscriber("/lcd_display/line2", Float64, self.cb_display_line2, queue_size=10)
+        self.lcd_sub = rospy.Subscriber("/lcd_display/line1", String, self.cb_display_line1, queue_size=10)
+        self.lcd_sub = rospy.Subscriber("/lcd_display/line2", String, self.cb_display_line2, queue_size=10)
 
     def backlight(self, on=True):
         if on:
@@ -89,9 +89,9 @@ class Lcd:
         except Exception as ex:
             self._n_err += 1
             if self._n_err == 4:
-                print(self.name, ex, '- further errors will be suppressed.')
+                print(ex, '- further errors will be suppressed.')
             elif self._n_err < 4:
-                print(self.name, ex)
+                print(ex)
 
     def lcd_string(self, message, line):
         assert line == 0 or line == 1, 'Line is 0 or 1.'
@@ -105,27 +105,26 @@ class Lcd:
 
     def cb_display_line1(self, msg):
         # TODO: Add a custom message so I can also specify the line the messages appears on ... therefore I need to
-        #  send a 1 or 2.
-        self.lcd_string(msg.data, line=1)
-        sleep(5)
+        #  send a 0 or 1.
+        self.lcd_string(msg.data, line=0)
+        rospy.sleep(5.)
+        self.lcd_string('Mode: Testing', 0)
 
     def cb_display_line2(self, msg):
-        self.lcd_string(msg.data, line=2)
-        sleep(5)
+        self.lcd_string(msg.data, line=1)
+        rospy.sleep(5.)
+        # rospy.loginfo('Callback 2 done')
 
 
 if __name__ == '__main__':
     rospy.init_node('lcd_display')
-    rospy.Rate(2)
 
     lcd = Lcd()
     lcd.setup()
-    lcd.lcd_string('Dexter booting up', 1)
-    sleep(5)
-    lcd.lcd_string('Dexter ready', 1)
-
-    battery_life = 50
-    while not rospy.is_shutdown():
-        lcd.lcd_string('Mode: Testing', 1)
-        lcd.lcd_string(f'Battery:{battery_life}%', 2)
-        rospy.Rate.sleep()
+    lcd.lcd_string('Starting up', 0)
+    rospy.sleep(5)
+    lcd.lcd_string('Ready', 0)
+    rospy.sleep(5)
+    
+    lcd.lcd_string('Mode: Testing', 0)
+    rospy.spin()
