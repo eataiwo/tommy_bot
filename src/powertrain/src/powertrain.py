@@ -88,7 +88,7 @@ class Powertrain:
                                                                 self.callback_set_direction, queue_size=10)
         self.powertrain_drive_subscriber = rospy.Subscriber("/powertrain/drive", Bool, self.callback_set_drive,
                                                             queue_size=10)
-        self.powertrain_obstacle_subscriber = rospy.Subscriber("/sensor/ranging_FC", Float64,
+        self.powertrain_obstacle_subscriber = rospy.Subscriber("/sensors/ranging_FC", Float64,
                                                                self.callback_detect_obstacle, queue_size=10)
 
     def callback_set_speed(self, msg):
@@ -96,6 +96,7 @@ class Powertrain:
 
     def callback_set_direction(self, msg):
         self.remote_direction = msg.data
+        rospy.loginfo('New direction received')
 
     def callback_set_drive(self, msg):
         if not self.drive and msg.data:
@@ -106,10 +107,12 @@ class Powertrain:
             GPIO.output(self.direction_pins, False)
 
     def callback_detect_obstacle(self, msg):
-        if msg.data < 10:
+        if msg.data < 20:
             self.obstacle = True
+            #rospy.loginfo('Obstacle detected')
         else:
             self.obstacle = False
+            #rospy.loginfo(f'No obstacle range is {msg.data}')
 
     def go(self, direction, distance, speed=0, initdelay=.05, verbose=False):
         """
@@ -129,7 +132,7 @@ class Powertrain:
 
         self.direction = direction
         self.speed = speed
-        GPIO.output(self.enable, False)
+        GPIO.output(self.enable_pin, False)
         GPIO.output(self.direction_pins, directions[direction])
 
 
@@ -195,7 +198,7 @@ class Powertrain:
         """
 
         self.direction = direction
-        GPIO.output(self.enable, False)
+        GPIO.output(self.enable_pin, False)
         GPIO.output(self.direction_pins, directions[direction])
         # rospy.sleep(initdelay)
 
@@ -224,7 +227,7 @@ class Powertrain:
                 # cleanup
                 GPIO.output(self.step_pins, False)
                 GPIO.output(self.direction_pins, False)
-                GPIO.output(self.enable_pin, True)
+                #GPIO.output(self.enable_pin, True)
 
 
     def remote(self, verbose=False):
@@ -275,10 +278,15 @@ if __name__ == "__main__":
 
     while True:
         if dexter.pwr_save:
+            rospy.sleep(1)
             GPIO.output(dexter.enable_pin, True)
         else:
-            GPIO.output(self.enable, False)
-        while dexter.drive and (not dexter.obstacle and dexter.remote_direction != 'forward'):
+            GPIO.output(dexter.enable_pin, False)
+        if dexter.obstacle and dexter.remote_direction == 'forward':
+            break
+        rospy.loginfo('Testing looping')
+        while dexter.drive:
+            rospy.loginfo(f'remote direction is {dexter.remote_direction}')
             if 0 > dexter.speed:
                 dexter.speed = 0
             elif dexter.speed > 100:
