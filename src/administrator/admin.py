@@ -25,7 +25,7 @@ if __name__ == '__main__':
 
     while not rospy.is_shutdown():
         mode_select = random.randint(1,5)
-        rospy.sleep(5)
+        rospy.sleep(10)
         if mode_select == 1: # placeholder logic
             mode_msg.data = 'booting'
         elif mode_select == 2: # placeholder logic

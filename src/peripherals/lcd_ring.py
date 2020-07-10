@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import time
 import board
 import neopixel
@@ -8,11 +10,11 @@ PIXEL_PIN = board.D12  # On a Raspberry pi, use this instead, not all pins are s
 NUM_PIXELS = 12  # The number of NeoPixels
 ORDER = neopixel.GRB  # The order of the pixel colors - RGB or GRB.
 
-led_modes = {'booting': {'colour': (100, 100, 100), 'type': 'rainbow_cycle', 'on': 1, 'off': None},
-             'standby': {'colour': (100, 100, 100), 'type': 'pulse', 'on': 0.1, 'off': None},
-             'alert': {'colour': (100, 100, 100), 'type': 'blink', 'on': 0.5, 'off': 0.5},
-             'battery_low': {'colour': (100, 100, 100), 'type': 'blink', 'on': 0.5, 'off': 0.1},
-             'busy': {'colour': (100, 100, 100), 'type': 'solid', 'on': 1, 'off': None}}
+led_modes = {'booting': {'colour': (100, 100, 100), 'type': 'rainbow_cycle', 'on': 1, 'off': 0},
+             'standby': {'colour': (75, 0, 130), 'type': 'pulse', 'on': 0.015, 'off': 0},
+             'alert': {'colour': (255, 69, 0), 'type': 'blink', 'on': 1, 'off': 1},
+             'battery_low': {'colour': (255, 0, 0), 'type': 'blink', 'on': 0.3, 'off': 0.2},
+             'busy': {'colour': (255, 165, 0), 'type': 'solid', 'on': 1, 'off': 0}}
 '''
 Types are solid, blink, pulse, rainbow 
 '''
@@ -24,7 +26,7 @@ class LedArray:
         self.num_pixel = num_pixels
         self.pixel_pin = pixel_pin
         self.order = order
-        self.brightness = 0.2
+        self.brightness = 0.8
         self.type = None
         self.on = None
         self.off = None
@@ -54,42 +56,50 @@ class LedArray:
             self.rainbow_cycle(0.002)
 
     def solid(self):
-        pixels.fill(self.rgb)
+        self.pixels.fill(self.rgb)
         self.pixels.show()
 
     def blink(self):
-        pixels.fill(self.rgb)
+        self.pixels.fill(self.rgb)
         self.pixels.show()
         rospy.sleep(self.on)
 
-        pixels.fill(0, 0, 0)
+        self.pixels.fill((0, 0, 0))
         self.pixels.show()
         rospy.sleep(self.off)
 
     def double_blink(self):
         # blink .._ (short short long)
-        pixels.fill(self.rgb)
+        self.pixels.fill(self.rgb)
         self.pixels.show()
         rospy.sleep(self.on)
 
-        pixels.fill(0, 0, 0)
+        self.pixels.fill((0, 0, 0))
         self.pixels.show()
         rospy.sleep(self.off)
 
-        pixels.fill(self.rgb)
+        self.pixels.fill(self.rgb)
         self.pixels.show()
         rospy.sleep(self.on * 5)
 
     def pulse(self):
-        pixels.fill(self.rgb)
+        self.pixels.fill(self.rgb)
         self.pixels.show()
-        max_brightness = pixels.brightness
-        for i in range(95, 0, -5):
-            pixels.brightness = (max_brightness * i) / 100
-            rospy.sleep(self.on)
-        for i in range(0, 101, 5):
-            pixels.brightness = (max_brightness * i) / 100
-            rospy.sleep(self.on)
+        max_brightness = self.pixels.brightness
+        for i in range(99, 5, -1):
+            if self.type == 'pulse':
+                self.pixels.brightness =  (i * max_brightness)/100
+                self.pixels.show()
+                rospy.sleep(self.on)
+            else:
+                return
+        for i in range(5, 101, 1):
+            if self.type == 'pulse':
+                self.pixels.brightness = (i * max_brightness)/100
+                self.pixels.show()
+                rospy.sleep(self.on)
+            else:
+                return
 
     def wheel(self, pos):
         # Input a value 0 to 255 to get a color value.
@@ -114,10 +124,10 @@ class LedArray:
 
     def rainbow_cycle(self, wait):
         for j in range(255):
-            for i in range(num_pixels):
-                pixel_index = (i * 256 // num_pixels) + j
-                pixels[i] = wheel(pixel_index & 255)
-            pixels.show()
+            for i in range(self.num_pixel):
+                pixel_index = (i * 256 // self.num_pixel) + j
+                self.pixels[i] = self.wheel(pixel_index & 255)
+            self.pixels.show()
             time.sleep(wait)
 
 
