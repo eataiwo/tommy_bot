@@ -13,7 +13,7 @@ td {text-align:center; vertical-align:middle;}
 </style>
 
 	<body>
-		<img src="http://192.168.8.1:8080/stream?topic=/raspicam_node/image/compressed" style="width:100%; max-width:300px; max-height:170px; border-radius:5px"></img>
+		<img src="http://192.168.8.1:8080/stream?topic=/raspicam_node/image" style="width:100%; height:100%; border-radius:10px; border-width: thin; border-color: coral"></img>
 		<table border="0">
 			<tr>
 				<td>
@@ -75,7 +75,13 @@ td {text-align:center; vertical-align:middle;}
 					</form>
 				</td>
 			</tr>
+			<tr>
+				<td>
+					<p style= "text-align:center; color:red; font-size:40px; float: center;"> {{speed}}
+						</br>
+					</p>
+				</td>
+			</tr>
 		</table>
-
 	</body>
 </html>

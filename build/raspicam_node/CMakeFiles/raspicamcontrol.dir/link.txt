@@ -1,0 +1,2 @@
+/usr/bin/ar qc /home/pi/Github/Dexter_ROS/devel/lib/libraspicamcontrol.a  CMakeFiles/raspicamcontrol.dir/src/RaspiCamControl.c.o
+/usr/bin/ranlib /home/pi/Github/Dexter_ROS/devel/lib/libraspicamcontrol.a

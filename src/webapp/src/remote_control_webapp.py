@@ -30,7 +30,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('index.html', server_ip=server_ip)
+    return render_template('index.html', server_ip=server_ip, speed=speed_msg.data)
 
 
 @app.route('/<changepin>', methods=['POST'])

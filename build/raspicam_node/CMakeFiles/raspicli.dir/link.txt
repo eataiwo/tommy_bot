@@ -1,0 +1,2 @@
+/usr/bin/ar qc /home/pi/Github/Dexter_ROS/devel/lib/libraspicli.a  CMakeFiles/raspicli.dir/src/RaspiCLI.c.o
+/usr/bin/ranlib /home/pi/Github/Dexter_ROS/devel/lib/libraspicli.a
