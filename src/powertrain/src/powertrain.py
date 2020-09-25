@@ -17,9 +17,7 @@ import sys
 import RPi.GPIO as GPIO
 from time import sleep
 import rospy
-from src.powertrain.step_converter import dist_2_steps
-from src.powertrain.speed_converter import percent_to_stepdelay
-from src.powertrain.step_converter import deg_2_steps
+from src.powertrain.utils import stepdelay_check, speed_check, dist_2_steps, percent_to_stepdelay, stepdelay_to_percent, deg_2_steps
 from std_msgs.msg import Float64, String, Bool
 
 # Turning is relative to if you were looking down onto the robot from above
