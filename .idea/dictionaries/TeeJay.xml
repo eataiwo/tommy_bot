@@ -2,6 +2,7 @@
   <dictionary name="TeeJay">
     <words>
       <w>backlight</w>
+      <w>initdelay</w>
       <w>powertrain</w>
       <w>stepdelay</w>
     </words>

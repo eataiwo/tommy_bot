@@ -88,20 +88,21 @@ class LedArray:
         max_brightness = self.pixels.brightness
         for i in range(99, 5, -1):
             if self.type == 'pulse':
-                self.pixels.brightness =  (i * max_brightness)/100
+                self.pixels.brightness = (i * max_brightness) / 100
                 self.pixels.show()
                 rospy.sleep(self.on)
             else:
                 return
         for i in range(5, 101, 1):
             if self.type == 'pulse':
-                self.pixels.brightness = (i * max_brightness)/100
+                self.pixels.brightness = (i * max_brightness) / 100
                 self.pixels.show()
                 rospy.sleep(self.on)
             else:
                 return
 
-    def wheel(self, pos):
+    @staticmethod
+    def wheel(pos):
         # Input a value 0 to 255 to get a color value.
         # The colours are a transition r - g - b - back to r.
         if pos < 0 or pos > 255:

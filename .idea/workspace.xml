@@ -27,12 +27,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8721ce3d-f5cf-4215-8250-19be014edc55" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/peripherals/lcd.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/peripherals/lcd_pub_demo.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/sensors/ultrasonic.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dictionaries/TeeJay.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/TeeJay.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/peripherals/lcd_ring.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/peripherals/lcd_ring.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/powertrain/src/powertrain.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/powertrain/src/powertrain.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/webapp/src/remote_control_webapp.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/webapp/src/remote_control_webapp.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/webapp/src/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/webapp/src/templates/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,7 +85,105 @@
       <option name="project" value="LOCAL" />
       <updated>1593338973258</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Update: Added lcd functionality">
+      <created>1594232064977</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1594232064977</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Updated: Add bme280 sensor">
+      <created>1594241295437</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1594241295437</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Fix: Initially used the library for a bmp280, correcting to the bme280 library">
+      <created>1594242595070</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1594242595070</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Update: Added DHT22 Library">
+      <created>1594246183288</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1594246183288</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Update: Added DHT22 Library">
+      <created>1594246784567</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1594246784567</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Update: Added ultrasonic sensor script">
+      <created>1594248527832</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1594248527832</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Update: Added ultrasonic sensor script">
+      <created>1594249060703</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1594249060703</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Update: Added ultrasonic sensor script">
+      <created>1594251377849</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1594251377849</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Feat: Disable drive when obstacle detected in immediate vicinity">
+      <created>1594255283414</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1594255283414</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Feat: Added power saving feature for stepper motors">
+      <created>1594257489156</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1594257489156</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Update: Added LED array and administrator node">
+      <created>1594269737963</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1594269737963</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Update: Improved led ring class">
+      <created>1594342186996</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1594342186996</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Update: camera stream url">
+      <created>1594398218037</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1594398218037</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Update: Added voice script">
+      <created>1594421956305</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1594421956305</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -115,12 +213,51 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Update &quot;Trying to fix issue with wheels not turning in sync&quot;" />
     <MESSAGE value="Update: Added in ROS powertrain demo" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update: Added in ROS powertrain demo" />
+    <MESSAGE value="Update: Added lcd functionality" />
+    <MESSAGE value="Updated: Add bme280 sensor" />
+    <MESSAGE value="Fix: Initially used the library for a bmp280, correcting to the bme280 library" />
+    <MESSAGE value="Update: Added DHT22 Library" />
+    <MESSAGE value="Update: Added ultrasonic sensor script" />
+    <MESSAGE value="Feat: Disable drive when obstacle detected in immediate vicinity" />
+    <MESSAGE value="Feat: Added power saving feature for stepper motors" />
+    <MESSAGE value="Update: Added LED array and administrator node" />
+    <MESSAGE value="Update: Improved led ring class" />
+    <MESSAGE value="Update: camera stream url" />
+    <MESSAGE value="Update: Added voice script" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update: Added voice script" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="320" y="190" key="Vcs.Push.Dialog.v2" timestamp="1593338979662">
+    <state x="240" y="75" width="1139" height="643" key="#Notifications" timestamp="1600676456839">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="320" y="190" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1593338979662" />
+    <state x="240" y="75" width="1139" height="643" key="#Notifications/-1920.0.1920.1080/0.0.1440.900@0.0.1440.900" timestamp="1600676456839" />
+    <state x="100" y="100" width="1240" height="700" key="DiffContextDialog" timestamp="1601064530631">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="100" y="100" key="DiffContextDialog/-1920.0.1920.1080/0.0.1440.900@0.0.1440.900" timestamp="1601064530631" />
+    <state x="100" y="100" width="1240" height="700" key="DiffContextDialog/0.0.1440.900/-1920.0.1920.1080@0.0.1440.900" timestamp="1594254928230" />
+    <state x="144" y="79" key="MergeDialog" timestamp="1601064577025">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="144" y="79" key="MergeDialog/-1920.0.1920.1080/0.0.1440.900@0.0.1440.900" timestamp="1601064577025" />
+    <state x="485" y="160" key="RollbackChangesDialog" timestamp="1594254478957">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="485" y="160" key="RollbackChangesDialog/0.0.1440.900/-1920.0.1920.1080@0.0.1440.900" timestamp="1594254478957" />
+    <state x="320" y="190" key="Vcs.Push.Dialog.v2" timestamp="1594421961672">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="-1493" y="228" key="Vcs.Push.Dialog.v2/0.0.1440.900/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1594242602148" />
+    <state x="320" y="190" key="Vcs.Push.Dialog.v2/0.0.1440.900/-1920.0.1920.1080@0.0.1440.900" timestamp="1594342716388" />
+    <state x="320" y="190" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1594421961672" />
+    <state x="478" y="170" key="git4idea.branch.GitSmartOperationDialog" timestamp="1601064538986">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="478" y="170" key="git4idea.branch.GitSmartOperationDialog/-1920.0.1920.1080/0.0.1440.900@0.0.1440.900" timestamp="1601064538986" />
+    <state x="478" y="170" key="git4idea.branch.GitSmartOperationDialog/0.0.1440.900/-1920.0.1920.1080@0.0.1440.900" timestamp="1594254442289" />
+    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup" timestamp="1594243793237">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup/0.0.1440.900/-1920.0.1920.1080@0.0.1440.900" timestamp="1594243793237" />
   </component>
 </project>

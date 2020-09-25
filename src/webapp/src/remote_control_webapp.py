@@ -32,6 +32,78 @@ app = Flask(__name__)
 def index():
     return render_template('index.html', server_ip=server_ip, speed=speed_msg.data)
 
+@app.route('/forward')
+def forward():
+    direction_msg.data = 'forward'
+    direction_publisher.publish(direction_msg)
+    if not drive_msg.data:
+        drive_msg.data = True
+        drive_publisher.publish(drive_msg)
+    return "nothing"
+
+@app.route('/backward')
+def forward():
+    direction_msg.data = 'backward'
+    direction_publisher.publish(direction_msg)
+    if not drive_msg.data:
+        drive_msg.data = True
+        drive_publisher.publish(drive_msg)
+    return "nothing"
+
+@app.route('/left')
+def forward():
+    direction_msg.data = 'left'
+    direction_publisher.publish(direction_msg)
+    if not drive_msg.data:
+        drive_msg.data = True
+        drive_publisher.publish(drive_msg)
+    return "nothing"
+
+@app.route('/right')
+def forward():
+    direction_msg.data = 'right'
+    direction_publisher.publish(direction_msg)
+    if not drive_msg.data:
+        drive_msg.data = True
+        drive_publisher.publish(drive_msg)
+    return "nothing"
+
+@app.route('/cw')
+def forward():
+    direction_msg.data = 'cw'
+    direction_publisher.publish(direction_msg)
+    if not drive_msg.data:
+        drive_msg.data = True
+        drive_publisher.publish(drive_msg)
+    return "nothing"
+
+@app.route('/ccw')
+def forward():
+    direction_msg.data = 'ccw'
+    direction_publisher.publish(direction_msg)
+    if not drive_msg.data:
+        drive_msg.data = True
+        drive_publisher.publish(drive_msg)
+    return "nothing"
+
+@app.route('/stop')
+def stop():
+    drive_msg.data = False
+    drive_publisher.publish(drive_msg)
+    return "nothing"
+
+@app.route('/speed_up')
+def speed_up():
+    speed_msg.data += 5
+    speed_publisher.publish(speed_msg)
+    return "nothing"
+
+@app.route('/speed_down')
+def speed_up():
+    speed_msg.data -= 5
+    speed_publisher.publish(speed_msg)
+    return "nothing"
+
 
 @app.route('/<changepin>', methods=['POST'])
 def reroute(changepin):
@@ -57,14 +129,8 @@ def reroute(changepin):
         speed_msg.data += 5
     else:
         print("Wrong command")
-        
-    direction_publisher.publish(direction_msg)
-    speed_publisher.publish(speed_msg)
-    if not drive_msg.data and changepin != 5:
-        drive_msg.data = True
-        drive_publisher.publish(drive_msg)   
-    response = make_response(redirect(url_for('index')))
-    return response
+
+
 
 def signal_handler(signal, frame):
     rospy.signal_shutdown("end")
@@ -72,4 +138,4 @@ def signal_handler(signal, frame):
     
 signal.signal(signal.SIGINT,signal_handler)
 
-app.run(debug=True, host='0.0.0.0', port=8000)
+app.run(debug=True, host='0.0.0.0', port=8000, threaded=True)

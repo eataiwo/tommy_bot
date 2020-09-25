@@ -20,20 +20,21 @@ import rospy
 from src.powertrain.utils import stepdelay_check, speed_check, dist_2_steps, percent_to_stepdelay, stepdelay_to_percent, deg_2_steps
 from std_msgs.msg import Float64, String, Bool
 
-# Turning is relative to if you were looking down onto the robot from above
-# Clockwise rotation is a value of 0, False, Low
-# Motors should be connected so all motors spin the wheels forward when stepper motor is set in the clockwise direction
-# TODO: Test that new directions dictionary corresponds to the right movements.
+# Stepper motors are wired so all motors rotate its wheel forward when set to clockwise. i.e. the motors
+# on the left hand side are wired with the opposite direction pins to the motors on the right hand side.
+
+# If I implement a one way connector on the stepper motors the above wiring implementation will no long be ideal
+# If so I will need to change it to accommodate this.
+
+
 directions = {'forward': (0, 0, 0, 0), 'backward': (1, 1, 1, 1),
               'left': (1, 0, 0, 1), 'right': (0, 1, 1, 0),
-              'tots_cw': (0, 1, 0, 1), 'tots_ccw': (1, 0, 1, 0),
-              'diag_fl': (' ', 0, 0, ' '), 'diag_fr': (1, ' ', ' ', 1),
-              'diag_rl': (0, ' ', ' ', 0), 'diag_rr': (' ', 1, 1, ' '),
-              'cor_right_cw:': (0, ' ', 0, ' '), 'cor_right_ccw': (1, ' ', 1, ' '),
-              'cor_left_cw:': (' ', 0, ' ', 0), 'cor_left_ccw': (' ', 1, ' ', 1),
-              'tur_rear_ax_cw': (0, 1, ' ', ' '), 'tur_rear_ax_ccw': (1, 0, ' ', ' '),
-              'tur_front_ax_cw': (' ', ' ', 0, 1), 'tur_front_ax_ccw': (' ', ' ', 1, 0)}
+              'cw': (0, 1, 0, 1), 'ccw': (1, 0, 1, 0)}
 
+# TODO: Add these as ROS parameters
+direction_pins = (27, 23, 19, 20)
+step_pins = (22, 24, 26, 21)
+enable_pin = 6
 
 class Powertrain:
     """
@@ -61,50 +62,70 @@ class Powertrain:
         Setup for the powertrain
     """
 
-    def __init__(self, direction_pins, step_pins, enable_pin):
-        """
-        :param direction_pins: GPIO pins connected to the direction pin on the stepper motor driver
-        :param step_pins: GPIO pins connected to the step pin on the stepper motor driver
-        :type direction_pins: list, tuple
-        :type step_pins: list, tuple
-        """
-
+    def __init__(self):
         self.direction_pins = direction_pins
         self.step_pins = step_pins
         self.enable_pin = enable_pin
         self.drive = False
         self.direction = ''
-        self.remote_direction = ''
         self.speed = 80
         self.stepdelay = ''
         self.obstacle = False
         self.pwr_save = True
 
-        self.powertrain_speed_subscriber = rospy.Subscriber("/powertrain/speed", Float64, self.callback_set_speed,
+        self.powertrain_speed_subscriber = rospy.Subscriber("/powertrain/speed", Float64, self.cb_set_speed,
                                                             queue_size=10)
         self.powertrain_direction_subscriber = rospy.Subscriber("/powertrain/direction", String,
-                                                                self.callback_set_direction, queue_size=10)
-        self.powertrain_drive_subscriber = rospy.Subscriber("/powertrain/drive", Bool, self.callback_set_drive,
+                                                                self.cb_set_direction, queue_size=10)
+        self.powertrain_drive_subscriber = rospy.Subscriber("/powertrain/drive", Bool, self.cb_drive,
                                                             queue_size=10)
         self.powertrain_obstacle_subscriber = rospy.Subscriber("/sensors/ranging_FC", Float64,
-                                                               self.callback_detect_obstacle, queue_size=10)
+                                                               self.cb_detect_obstacle, queue_size=10)
 
-    def callback_set_speed(self, msg):
+    def cb_set_speed(self, msg):
         self.speed = msg.data
 
-    def callback_set_direction(self, msg):
-        self.remote_direction = msg.data
+    def cb_set_direction(self, msg):
+        self.direction = msg.data
         rospy.loginfo('New direction received')
+        if not self.drive:
+            self.remote_control()
 
-    def callback_set_drive(self, msg):
-        if not self.drive and msg.data:
-            self.drive = True
-        elif not msg.data:
-            self.drive = False
+    def cb_drive(self, msg):
+
+        self.drive = msg.data
+
+        if self.drive:
+            # Set speed conversion according to the type of motion.
+            # Implemented for better user control when using webapp.
+            if self.direction in ['cw', 'ccw']:
+                remote_speed_type = 'angular'
+            else:
+                remote_speed_type = 'linear'
+
+            sleep(0.2)
+            GPIO.output(self.enable_pin, False)
+
+            # Drive in direction commanded from webapp indefinitely
+            while self.drive:
+                rospy.loginfo(f'direction is {self.direction}')
+                self.go_steps(self.direction, 1, percent_to_stepdelay(self.speed, remote_speed_type), 0, verbose)
+
+        elif not self.drive:
             GPIO.output(self.step_pins, False)
             GPIO.output(self.direction_pins, False)
+            sleep(0.2)
+            GPIO.output(self.enable_pin, True)
 
-    def callback_detect_obstacle(self, msg):
+        # TODO: Delete if new script working
+        # if not self.drive and msg.data:
+        #     self.drive = True
+        # elif not msg.data:
+        #     self.drive = False
+        #     GPIO.output(self.step_pins, False)
+        #     GPIO.output(self.direction_pins, False)
+
+    def cb_detect_obstacle(self, msg):
         if msg.data < 20:
             self.obstacle = True
             #rospy.loginfo('Obstacle detected')
@@ -128,58 +149,15 @@ class Powertrain:
         :type verbose: bool
         """
 
-        self.direction = direction
-        self.speed = speed
-        GPIO.output(self.enable_pin, False)
-        GPIO.output(self.direction_pins, directions[direction])
-
-
-        # Prevent user selecting speeds outside of the limits
-        if 0 > speed:
-            speed = 0
-
-        elif speed > 100:
-            speed = 100
-        else:
-            stepdelay = percent_to_stepdelay(speed)
-
+        # Convert distance or degrees to steps depending direction
         if direction in ['forward', 'backward', 'left', 'right']:
             steps = dist_2_steps(distance)[0]
-        elif direction in ['tots_cw', 'tots_ccw']:
+        elif direction in ['cw', 'ccw']:
             steps = deg_2_steps(distance)[0]
 
-        sleep(initdelay)
+        self.go_steps(direction, steps, percent_to_stepdelay(speed), initdelay, verbose)
 
-        if not self.obstacle:
-            try:
-                for i in range(steps):
-                    GPIO.output(self.step_pins, True)
-                    sleep(stepdelay)
-                    GPIO.output(self.step_pins, False)
-                    sleep(stepdelay)
-                    if verbose:
-                        print(f'Steps count {i}')
-            except KeyboardInterrupt:
-                print('User Keyboard Interrupt @ Powertrain.go()')
-            except Exception as motor_error:
-                print(sys.exc_info()[0])
-                print(motor_error)
-                print("Powertrain.go(): Unexpected error:")
-            else:
-                if verbose:
-                    print(f'Direction = {direction}')
-                    print(f'Number of steps = {steps}')
-                    print(f'Speed = {speed}')
-                    print(f'Step Delay = {stepdelay}')
-                    print(f'Initial delay = {initdelay}')
-            finally:
-                # cleanup
-                GPIO.output(self.step_pins, False)
-                GPIO.output(self.direction_pins, False)
-                if self.pwr_save:
-                    GPIO.output(self.enable_pin, True)
-
-    def go_steps(self, direction='forward', steps=100, stepdelay=.05, initdelay=.05, verbose=False):
+    def go_steps(self, direction='forward', steps=100, stepdelay=.05, initdelay=0, verbose=False):
         """
         Moves Dexter based on desired direction, stepdelay and number of steps.
 
@@ -195,37 +173,41 @@ class Powertrain:
         :type verbose: bool
         """
 
-        self.direction = direction
-        GPIO.output(self.enable_pin, False)
-        GPIO.output(self.direction_pins, directions[direction])
-        # rospy.sleep(initdelay)
+        stepdelay = stepdelay_check(stepdelay)
+        # self.speed = stepdelay_to_percent(stepdelay)  # Update speed attribute
 
-        if not self.obstacle:
-            try:
-                for i in range(steps):
-                    GPIO.output(self.step_pins, True)
-                    sleep(stepdelay)
-                    GPIO.output(self.step_pins, False)
-                    sleep(stepdelay)
-                    if verbose:
-                        print(f'Steps count {i}')
-            except KeyboardInterrupt:
-                print('User Keyboard Interrupt @ Powertrain.go_steps()')
-            except Exception as motor_error:
-                print(sys.exc_info()[0])
-                print(motor_error)
-                print("Powertrain.go_steps(): Unexpected error:")
-            else:
-                if verbose:
-                    print(f'Direction = {direction}')
-                    print(f'Number of steps = {steps}')
-                    print(f'Step Delay = {stepdelay}')
-                    print(f'Initial delay = {initdelay}')
-            finally:
-                # cleanup
+        self.direction = direction  # Update direction attribute
+
+        GPIO.output(self.direction_pins, wheel_directions[direction])
+
+        sleep(initdelay)
+
+        GPIO.output(self.enable_pin, False)
+
+        try:
+            for i in range(steps):
+                GPIO.output(self.step_pins, True)
+                sleep(stepdelay)
                 GPIO.output(self.step_pins, False)
-                GPIO.output(self.direction_pins, False)
-                #GPIO.output(self.enable_pin, True)
+                sleep(stepdelay)
+                if verbose:
+                    print(f'Steps count {i}')
+        except KeyboardInterrupt:
+            print('User Keyboard Interrupt @ Powertrain.go_steps()')
+        except Exception as motor_error:
+            print(sys.exc_info()[0])
+            print(motor_error)
+            print("Powertrain.go_steps(): Unexpected error:")
+        else:
+            if verbose:
+                print(f'Direction = {direction}')
+                print(f'Number of steps = {steps}')
+                print(f'Step Delay = {stepdelay}')
+                print(f'Initial delay = {initdelay}')
+        finally:
+            # cleanup
+            GPIO.output(self.step_pins, False)
+            GPIO.output(self.direction_pins, False)
 
 
     def remote(self, verbose=False):
@@ -236,21 +218,37 @@ class Powertrain:
         :type verbose: bool
         """
 
-        if 0 > self.speed:
-            self.speed = 0
-        elif self.speed > 100:
-            self.speed = 100
+        self.drive = True
 
+        # Set speed conversion according to the type of motion.
+        # Implemented for better user control when using webapp.
+        if self.direction in ['cw', 'ccw']:
+            remote_speed_type = 'angular'
+        else:
+            remote_speed_type = 'linear'
+
+        # Purpose delay to give time of user to look up from webapp before command is issued.
+        sleep(0.2)
+        GPIO.output(self.enable_pin, False)
+
+        # Drive in direction commanded from webapp indefinitely
         while self.drive:
-            self.go_steps(self.remote_direction, 1, percent_to_stepdelay(self.speed), 0, verbose)
+            self.go_steps(self.direction, 1, percent_to_stepdelay(self.speed, remote_speed_type), 0, verbose)
 
     def stop(self):
         """
         Stops powertrain
         """
         self.drive = False
+
+        # Cleanup GPIO
         GPIO.output(self.step_pins, False)
         GPIO.output(self.direction_pins, False)
+
+        #Delay to ensure stepper motors have brought robot to a standstill before turning off motors for power saving
+        sleep(0.2)
+        # Power save
+        GPIO.output(self.enable_pin, True)
 
     def setup(self):
         """
@@ -261,32 +259,30 @@ class Powertrain:
         GPIO.setup(self.direction_pins, GPIO.OUT)
         GPIO.setup(self.step_pins, GPIO.OUT)
         GPIO.setup(self.enable_pin, GPIO.OUT)
+        GPIO.output(self.enable_pin, True)
 
 
 if __name__ == "__main__":
     rospy.init_node('powertrain')
 
-    # TODO: Add these as ROS parameters
-    direction_pins = (27, 23, 19, 20)
-    step_pins = (22, 24, 26, 21)
-    enable_pin = 6
-
-    dexter = Powertrain(direction_pins, step_pins, enable_pin)
+    dexter = Powertrain()
     dexter.setup()
 
     while True:
-        if dexter.pwr_save:
-            rospy.sleep(1)
-            GPIO.output(dexter.enable_pin, True)
-        else:
-            GPIO.output(dexter.enable_pin, False)
-        if dexter.obstacle and dexter.remote_direction == 'forward':
-            break
+        # TODO: Delete if new script working
+        # if dexter.pwr_save:
+        #     rospy.sleep(1)
+        #     GPIO.output(dexter.enable_pin, True)
+        # else:
+        #     GPIO.output(dexter.enable_pin, False)
+
+        # TODO: Delete if new script working
+        # if dexter.obstacle and dexter.remote_direction == 'forward':
+        #     break
         rospy.loginfo('Testing looping')
-        while dexter.drive:
-            rospy.loginfo(f'remote direction is {dexter.remote_direction}')
-            if 0 > dexter.speed:
-                dexter.speed = 0
-            elif dexter.speed > 100:
-                dexter.speed = 100
-            dexter.go_steps(dexter.remote_direction, 1, percent_to_stepdelay(dexter.speed), 0)
+
+
+        # TODO: Delete if new script working
+        # while dexter.drive:
+        #     rospy.loginfo(f'remote direction is {dexter.remote_direction}')
+        #     dexter.go_steps(dexter.remote_direction, 1, percent_to_stepdelay(dexter.speed), 0)
