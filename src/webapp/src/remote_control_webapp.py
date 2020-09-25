@@ -42,7 +42,7 @@ def forward():
     return "nothing"
 
 @app.route('/backward')
-def forward():
+def backward():
     direction_msg.data = 'backward'
     direction_publisher.publish(direction_msg)
     if not drive_msg.data:
@@ -51,7 +51,7 @@ def forward():
     return "nothing"
 
 @app.route('/left')
-def forward():
+def left():
     direction_msg.data = 'left'
     direction_publisher.publish(direction_msg)
     if not drive_msg.data:
@@ -60,7 +60,7 @@ def forward():
     return "nothing"
 
 @app.route('/right')
-def forward():
+def right():
     direction_msg.data = 'right'
     direction_publisher.publish(direction_msg)
     if not drive_msg.data:
@@ -69,7 +69,7 @@ def forward():
     return "nothing"
 
 @app.route('/cw')
-def forward():
+def cw():
     direction_msg.data = 'cw'
     direction_publisher.publish(direction_msg)
     if not drive_msg.data:
@@ -78,7 +78,7 @@ def forward():
     return "nothing"
 
 @app.route('/ccw')
-def forward():
+def ccw():
     direction_msg.data = 'ccw'
     direction_publisher.publish(direction_msg)
     if not drive_msg.data:
@@ -99,38 +99,10 @@ def speed_up():
     return "nothing"
 
 @app.route('/speed_down')
-def speed_up():
+def speed_down():
     speed_msg.data -= 5
     speed_publisher.publish(speed_msg)
     return "nothing"
-
-
-@app.route('/<changepin>', methods=['POST'])
-def reroute(changepin):
-    changepin = int(changepin)
-    if changepin == 1:
-        direction_msg.data = 'left'
-    elif changepin == 2:
-        direction_msg.data = 'forward'
-    elif changepin == 3:
-        direction_msg.data = 'right'
-    elif changepin == 4:
-        direction_msg.data = 'backward'
-    elif changepin == 5:
-        drive_msg.data = False
-        drive_publisher.publish(drive_msg)
-    elif changepin == 6:
-        direction_msg.data = 'tots_cw'
-    elif changepin == 7:
-        direction_msg.data = 'tots_ccw'
-    elif changepin == 8:
-        speed_msg.data -= 5
-    elif changepin == 9:
-        speed_msg.data += 5
-    else:
-        print("Wrong command")
-
-
 
 def signal_handler(signal, frame):
     rospy.signal_shutdown("end")
