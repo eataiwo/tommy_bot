@@ -20,10 +20,10 @@ drive_msg = Bool()
 drive_msg.data = False
 
 # Get server ip
-s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-s.connect(("8.8.8.8", 80))
-server_ip = s.getsockname()[0]
-s.close()
+# s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+# s.connect(("8.8.8.8", 80))
+# server_ip = s.getsockname()[0]
+# s.close()
 
 app = Flask(__name__)
 
@@ -36,6 +36,7 @@ def index():
 def forward():
     direction_msg.data = 'forward'
     direction_publisher.publish(direction_msg)
+    rospy.loginfo('button working')
     if not drive_msg.data:
         drive_msg.data = True
         drive_publisher.publish(drive_msg)
@@ -45,6 +46,7 @@ def forward():
 def backward():
     direction_msg.data = 'backward'
     direction_publisher.publish(direction_msg)
+    rospy.loginfo('button working')
     if not drive_msg.data:
         drive_msg.data = True
         drive_publisher.publish(drive_msg)
@@ -54,6 +56,7 @@ def backward():
 def left():
     direction_msg.data = 'left'
     direction_publisher.publish(direction_msg)
+    rospy.loginfo('button working')
     if not drive_msg.data:
         drive_msg.data = True
         drive_publisher.publish(drive_msg)
@@ -63,6 +66,7 @@ def left():
 def right():
     direction_msg.data = 'right'
     direction_publisher.publish(direction_msg)
+    rospy.loginfo('button working')
     if not drive_msg.data:
         drive_msg.data = True
         drive_publisher.publish(drive_msg)
@@ -72,6 +76,7 @@ def right():
 def cw():
     direction_msg.data = 'cw'
     direction_publisher.publish(direction_msg)
+    rospy.loginfo('button working')
     if not drive_msg.data:
         drive_msg.data = True
         drive_publisher.publish(drive_msg)
@@ -81,6 +86,7 @@ def cw():
 def ccw():
     direction_msg.data = 'ccw'
     direction_publisher.publish(direction_msg)
+    rospy.loginfo('button working')
     if not drive_msg.data:
         drive_msg.data = True
         drive_publisher.publish(drive_msg)
@@ -90,18 +96,21 @@ def ccw():
 def stop():
     drive_msg.data = False
     drive_publisher.publish(drive_msg)
+    rospy.loginfo('button working')
     return "nothing"
 
 @app.route('/speed_up')
 def speed_up():
     speed_msg.data += 5
     speed_publisher.publish(speed_msg)
+    rospy.loginfo('button working')
     return "nothing"
 
 @app.route('/speed_down')
 def speed_down():
     speed_msg.data -= 5
     speed_publisher.publish(speed_msg)
+    rospy.loginfo('button working')
     return "nothing"
 
 def signal_handler(signal, frame):
