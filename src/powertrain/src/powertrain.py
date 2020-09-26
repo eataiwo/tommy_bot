@@ -27,7 +27,7 @@ from std_msgs.msg import Float64, String, Bool
 # If so I will need to change it to accommodate this.
 
 
-directions = {'forward': (0, 0, 0, 0), 'backward': (1, 1, 1, 1),
+wheel_directions = {'forward': (0, 0, 0, 0), 'backward': (1, 1, 1, 1),
               'left': (1, 0, 0, 1), 'right': (0, 1, 1, 0),
               'cw': (0, 1, 0, 1), 'ccw': (1, 0, 1, 0)}
 
@@ -88,34 +88,13 @@ class Powertrain:
     def cb_set_direction(self, msg):
         self.direction = msg.data
         rospy.loginfo('New direction received')
-        if not self.drive:
-            self.remote_control()
+        # if not self.drive:
+            # self.remote_control()
 
     def cb_drive(self, msg):
 
         self.drive = msg.data
-
-        if self.drive:
-            # Set speed conversion according to the type of motion.
-            # Implemented for better user control when using webapp.
-            if self.direction in ['cw', 'ccw']:
-                remote_speed_type = 'angular'
-            else:
-                remote_speed_type = 'linear'
-
-            sleep(0.2)
-            GPIO.output(self.enable_pin, False)
-
-            # Drive in direction commanded from webapp indefinitely
-            while self.drive:
-                rospy.loginfo(f'direction is {self.direction}')
-                self.go_steps(self.direction, 1, percent_to_stepdelay(self.speed, remote_speed_type), 0, verbose)
-
-        elif not self.drive:
-            GPIO.output(self.step_pins, False)
-            GPIO.output(self.direction_pins, False)
-            sleep(0.2)
-            GPIO.output(self.enable_pin, True)
+        rospy.loginfo(f' drive state is {self.drive}')
 
         # TODO: Delete if new script working
         # if not self.drive and msg.data:
@@ -279,10 +258,29 @@ if __name__ == "__main__":
         # TODO: Delete if new script working
         # if dexter.obstacle and dexter.remote_direction == 'forward':
         #     break
-        rospy.loginfo('Testing looping')
-
+        #rospy.loginfo('Testing looping')
 
         # TODO: Delete if new script working
         # while dexter.drive:
         #     rospy.loginfo(f'remote direction is {dexter.remote_direction}')
         #     dexter.go_steps(dexter.remote_direction, 1, percent_to_stepdelay(dexter.speed), 0)
+        if dexter.drive:
+            # Set speed conversion according to the type of motion.
+            # Implemented for better user control when using webapp.
+            if dexter.direction in ['cw', 'ccw']:
+                remote_speed_type = 'angular'
+            else:
+                remote_speed_type = 'linear'
+
+            # Purpose delay to give time of user to look up from webapp before command is issued.
+            #sleep(0.2)
+            GPIO.output(dexter.enable_pin, False)
+
+            # Drive in direction commanded from webapp indefinitely
+            while dexter.drive:
+                dexter.go_steps(dexter.direction, 1, percent_to_stepdelay(dexter.speed, remote_speed_type), 0)
+        elif not dexter.drive:
+            GPIO.output(dexter.step_pins, False)
+            GPIO.output(dexter.direction_pins, False)
+            sleep(0.2)
+            GPIO.output(dexter.enable_pin, True)

@@ -4,6 +4,91 @@
 	<head>
 		<title>Dexter Controller</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+        <script type="text/javascript" src="{{ url_for('static', filename='jquery-3.5.1.min.js') }}"></script>
+        <script type=text/javascript>
+            
+                $(function() {
+                  $('a#forward').bind('click', function() {
+                    $.getJSON('/forward',
+                        function(data) {
+                      //do nothing
+                    });
+                    return false;
+                  });
+                });
+                $(function() {
+                  $('a#backward').bind('click', function() {
+                    $.getJSON('/backward',
+                        function(data) {
+                      //do nothing
+                    });
+                    return false;
+                  });
+                });
+                $(function() {
+                  $('a#left').bind('click', function() {
+                    $.getJSON('/left',
+                        function(data) {
+                      //do nothing
+                    });
+                    return false;
+                  });
+                });
+                $(function() {
+                  $('a#right').bind('click', function() {
+                    $.getJSON('/right',
+                        function(data) {
+                      //do nothing
+                    });
+                    return false;
+                  });
+                });
+                $(function() {
+                  $('a#cw').bind('click', function() {
+                    $.getJSON('/cw',
+                        function(data) {
+                      //do nothing
+                    });
+                    return false;
+                  });
+                });
+                $(function() {
+                  $('a#ccw').bind('click', function() {
+                    $.getJSON('/ccw',
+                        function(data) {
+                      //do nothing
+                    });
+                    return false;
+                  });
+                });
+                $(function() {
+                  $('a#stop').bind('click', function() {
+                    $.getJSON('/stop',
+                        function(data) {
+                      //do nothing
+                    });
+                    return false;
+                  });
+                });
+                $(function() {
+                  $('a#speed_up').bind('click', function() {
+                    $.getJSON('/speed_up',
+                        function(data) {
+                      //do nothing
+                    });
+                    return false;
+                  });
+                });
+                $(function() {
+                  $('a#speed_down').bind('click', function() {
+                    $.getJSON('/speed_down',
+                        function(data) {
+                      //do nothing
+                    });
+                    return false;
+                  });
+                });
+        </script>
 	</head>
 
 <style>
@@ -12,94 +97,9 @@ img {width:80%; text-align:center;}
 input {width:80%;}
 td {text-align:center; vertical-align:middle;}
 </style>
-
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script type=text/javascript>
-        $(function() {
-          $('a#forward').bind('click', function() {
-            $.getJSON('/forward',
-                function(data) {
-              //do nothing
-            });
-            return false;
-          });
-        });
-        $(function() {
-          $('a#backward').bind('click', function() {
-            $.getJSON('/backward',
-                function(data) {
-              //do nothing
-            });
-            return false;
-          });
-        });
-        $(function() {
-          $('a#left').bind('click', function() {
-            $.getJSON('/left',
-                function(data) {
-              //do nothing
-            });
-            return false;
-          });
-        });
-        $(function() {
-          $('a#right').bind('click', function() {
-            $.getJSON('/right',
-                function(data) {
-              //do nothing
-            });
-            return false;
-          });
-        });
-        $(function() {
-          $('a#cw').bind('click', function() {
-            $.getJSON('/cw',
-                function(data) {
-              //do nothing
-            });
-            return false;
-          });
-        });
-        $(function() {
-          $('a#ccw').bind('click', function() {
-            $.getJSON('/ccw',
-                function(data) {
-              //do nothing
-            });
-            return false;
-          });
-        });
-        $(function() {
-          $('a#stop').bind('click', function() {
-            $.getJSON('/stop',
-                function(data) {
-              //do nothing
-            });
-            return false;
-          });
-        });
-        $(function() {
-          $('a#speed_up').bind('click', function() {
-            $.getJSON('/speed_up',
-                function(data) {
-              //do nothing
-            });
-            return false;
-          });
-        });
-        $(function() {
-          $('a#speed_down').bind('click', function() {
-            $.getJSON('/speed_down',
-                function(data) {
-              //do nothing
-            });
-            return false;
-          });
-        });
-</script>
-	</body>
+    </body>
 	<div class="video_stream">
-		<img src="http://192.168.8.1:8080/stream?topic=/raspicam_node/image" style="width:100%; height:100%; border-radius:10px; max-width:500px; text-align:center; "></img>
+		<img src="http://192.168.0.42:8080/stream?topic=/image" style="width:100%; height:100%; border-radius:10px; max-width:500px; text-align:center; "></img>
 	</div>
 	<div class="remote_control">
 		<table border="0">
