@@ -1,7 +1,0 @@
-setup.py
-Dexter_ROS.egg-info/PKG-INFO
-Dexter_ROS.egg-info/SOURCES.txt
-Dexter_ROS.egg-info/dependency_links.txt
-Dexter_ROS.egg-info/top_level.txt
-powertrain/__init__.py
-webapp/__init__.py

@@ -10,7 +10,7 @@ mode = ['booting', 'standby', 'alert', 'low_battery', 'busy']
 mode_select = 2 # placeholder variable
 
 if __name__ == '__main__':
-    rospy.init_node('administrator')
+    rospy.init_node('_administrator')
     mode_msg.data = mode[0]
     mode_publisher.publish(mode_msg)
     rospy.sleep(10)

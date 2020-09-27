@@ -1,1 +1,0 @@
-/usr/local/lib/python3.7/dist-packages/Dexter_ROS-0.0.1-py3.7.egg

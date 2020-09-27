@@ -28,9 +28,6 @@
   <component name="ChangeListManager">
     <list default="true" id="8721ce3d-f5cf-4215-8250-19be014edc55" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/peripherals/camera.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/powertrain/src/powertrain.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/powertrain/src/powertrain.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/webapp/src/remote_control_webapp.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/webapp/src/remote_control_webapp.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,6 +54,14 @@
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/webapp/src" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/webapp/src" />
+      <recent name="$PROJECT_DIR$/src/webapp" />
+      <recent name="$PROJECT_DIR$/src/web_video_server" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="project-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
@@ -238,7 +243,21 @@
       <option name="project" value="LOCAL" />
       <updated>1601219843720</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="Feat: Added camera">
+      <created>1601231486632</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1601231486632</updated>
+    </task>
+    <task id="LOCAL-00026" summary="Update: Cleaned up webapp script">
+      <created>1601232897592</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1601232897592</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -287,7 +306,9 @@
     <MESSAGE value="Update: Cleaned up powertrain node" />
     <MESSAGE value="Update: Added launch file for webapp" />
     <MESSAGE value="Update: Added top level launch file" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update: Added top level launch file" />
+    <MESSAGE value="Feat: Added camera" />
+    <MESSAGE value="Update: Cleaned up webapp script" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update: Cleaned up webapp script" />
   </component>
   <component name="WindowStateProjectService">
     <state x="240" y="75" width="1139" height="643" key="#Notifications" timestamp="1600676456839">
@@ -298,23 +319,25 @@
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
     <state x="-1272" y="283" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/-1920.0.1920.1080/0.0.1440.900@-1920.0.1920.1080" timestamp="1601219892142" />
-    <state x="100" y="100" width="1240" height="700" key="DiffContextDialog" timestamp="1601064530631">
-      <screen x="0" y="0" width="1440" height="900" />
+    <state x="-1787" y="120" width="1654" height="840" key="DiffContextDialog" timestamp="1601232735633">
+      <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
+    <state x="-1787" y="120" width="1654" height="840" key="DiffContextDialog/-1920.0.1920.1080/0.0.1440.900@-1920.0.1920.1080" timestamp="1601232735633" />
     <state x="100" y="100" key="DiffContextDialog/-1920.0.1920.1080/0.0.1440.900@0.0.1440.900" timestamp="1601064530631" />
     <state x="100" y="100" width="1240" height="700" key="DiffContextDialog/0.0.1440.900/-1920.0.1920.1080@0.0.1440.900" timestamp="1594254928230" />
     <state x="144" y="79" key="MergeDialog" timestamp="1601064577025">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="144" y="79" key="MergeDialog/-1920.0.1920.1080/0.0.1440.900@0.0.1440.900" timestamp="1601064577025" />
-    <state x="485" y="160" key="RollbackChangesDialog" timestamp="1594254478957">
-      <screen x="0" y="0" width="1440" height="900" />
-    </state>
-    <state x="485" y="160" key="RollbackChangesDialog/0.0.1440.900/-1920.0.1920.1080@0.0.1440.900" timestamp="1594254478957" />
-    <state x="-1493" y="228" key="Vcs.Push.Dialog.v2" timestamp="1601219865184">
+    <state x="-1273" y="192" key="RollbackChangesDialog" timestamp="1601232732759">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
-    <state x="-1493" y="228" key="Vcs.Push.Dialog.v2/-1920.0.1920.1080/0.0.1440.900@-1920.0.1920.1080" timestamp="1601219865184" />
+    <state x="-1273" y="192" key="RollbackChangesDialog/-1920.0.1920.1080/0.0.1440.900@-1920.0.1920.1080" timestamp="1601232732759" />
+    <state x="485" y="160" key="RollbackChangesDialog/0.0.1440.900/-1920.0.1920.1080@0.0.1440.900" timestamp="1594254478957" />
+    <state x="-1493" y="228" key="Vcs.Push.Dialog.v2" timestamp="1601232905060">
+      <screen x="-1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="-1493" y="228" key="Vcs.Push.Dialog.v2/-1920.0.1920.1080/0.0.1440.900@-1920.0.1920.1080" timestamp="1601232905060" />
     <state x="320" y="190" key="Vcs.Push.Dialog.v2/-1920.0.1920.1080/0.0.1440.900@0.0.1440.900" timestamp="1601073448230" />
     <state x="-1493" y="228" key="Vcs.Push.Dialog.v2/0.0.1440.900/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1594242602148" />
     <state x="320" y="190" key="Vcs.Push.Dialog.v2/0.0.1440.900/-1920.0.1920.1080@0.0.1440.900" timestamp="1594342716388" />

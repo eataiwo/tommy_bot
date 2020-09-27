@@ -26,9 +26,9 @@ class Hcsr04:
         self.air_temp = 25 # default initial value
         self.hum = 50 # default initial value
         # Ensure this is the ambient temperature not the air temperature inside Dexter
-        self.temp_sub = rospy.Subscriber("sensors/temperature", Float64, self.cb_update_air_temp, queue_size=10)
-        self.hum_sub = rospy.Subscriber("sensors/humidity", Float64, self.cb_update_hum, queue_size=10)
-        self.range_pub = rospy.Publisher('sensors/ranging_FC', Float64, queue_size=10)
+        self.temp_sub = rospy.Subscriber("_sensors/temperature", Float64, self.cb_update_air_temp, queue_size=10)
+        self.hum_sub = rospy.Subscriber("_sensors/humidity", Float64, self.cb_update_hum, queue_size=10)
+        self.range_pub = rospy.Publisher('_sensors/ranging_FC', Float64, queue_size=10)
 
     def distance(self):
         # set Trigger to HIGH
