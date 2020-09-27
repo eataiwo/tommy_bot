@@ -1,0 +1,5 @@
+<launch>
+
+    <node name="webapp_remote_controller" pkg="webapp" type="remote_control_webapp.py" />
+
+</launch>
