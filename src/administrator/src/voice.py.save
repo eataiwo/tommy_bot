@@ -1,0 +1,34 @@
+import wave
+import pyaudio
+from io import StringIO, BytesIO
+from picotts import PicoTTS
+
+picotts = PicoTTS()
+wav = picotts.synth_wav('Hello World! Doing more testing')
+wavs = wave.open(BytesIO(wav), 'rb')
+
+p = pyaudio.PyAudio()
+
+print(wavs.getframerate())
+print(type(wavs.getframerate()))
+
+# Open a .Stream object to write the WAV file to
+# 'output = True' indicates that the sound will be played rather than recorded
+stream = p.open(format = p.get_format_from_width(wavs.getsampwidth()),
+                channels = wavs.getnchannels(),
+                rate = wavs.getframerate(),
+                output = True)
+
+# Read data in chunks
+data = wavs.readframes(chunk)
+
+# Play the sound by writing the audio data to the stream
+while len(data) > 0:
+    stream.write(data)
+    data = wavs.readframes(chunk)
+
+# Close and terminate the stream
+stream.close()
+#p.terminate()
+
+print (wav.getnchannels(), wav.getframerate(), wav.getnframes())
