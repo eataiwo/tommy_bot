@@ -11,12 +11,10 @@ app = Flask(__name__)
 
 # Setup ROS node and publishers
 rospy.init_node('webapp_remote_controller')
-rospy.loginfo('node started')
 speed_publisher = rospy.Publisher('/powertrain/speed', Float64, queue_size=10)
 direction_publisher = rospy.Publisher('/powertrain/direction', String, queue_size=10)
 drive_publisher = rospy.Publisher('/powertrain/drive', Bool, queue_size=10)
 
-print('publishers running')
 speed_msg = Float64()
 speed_msg.data = 80
 direction_msg = String()
