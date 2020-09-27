@@ -8,7 +8,7 @@ chunk = 1024
 
 picotts = PicoTTS()
 wavs = picotts.synth_wav('Hello World! Doing more testing')
-wav = wave.open(Bytes(wavs), 'rb')
+wav = wave.open(BytesIO(wavs), 'rb')
 
 p = pyaudio.PyAudio()
 
@@ -36,4 +36,4 @@ while data != '':
 stream.close()
 p.terminate()
 
-print (wav.getnchannels(), wav.getframerate(), wav.getnframes())
+print(wav.getnchannels(), wav.getframerate(), wav.getnframes())

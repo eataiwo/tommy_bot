@@ -22,8 +22,14 @@ wav = sa.WaveObject(wav, 2, 2, 8000)
 another_obj = wav.play()
 another_obj.wait_done()
 
+picotts.voice = 'en-GB'
+wav = picotts.synth_wav('Hi there, I am tommy. I am ready for an adventure')
+wav = sa.WaveObject(wav, 2, 2, 8000)
+another_obj = wav.play()
+another_obj.wait_done()
+
 picotts.voice = 'fr-FR'
-wav = picotts.synth_wav('Hello, how are you doing today?')
+wav = picotts.synth_wav('Hi there, I am tommy. I am ready for an adventure')
 wav = sa.WaveObject(wav, 2, 2, 8000)
 another_obj = wav.play()
 another_obj.wait_done()

@@ -79,7 +79,7 @@ class Powertrain:
                                                                 self.cb_set_direction, queue_size=10)
         self.powertrain_drive_subscriber = rospy.Subscriber("/powertrain/drive", Bool, self.cb_drive,
                                                             queue_size=10)
-        self.powertrain_obstacle_subscriber = rospy.Subscriber("/_sensors/ranging_FC", Float64,
+        self.powertrain_obstacle_subscriber = rospy.Subscriber("/sensors/ranging_FC", Float64,
                                                                self.cb_detect_obstacle, queue_size=10)
 
     def cb_set_speed(self, msg):
