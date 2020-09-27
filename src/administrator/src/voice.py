@@ -1,39 +1,35 @@
+#!/usr/bin/env python
 
-import wave
-import pyaudio
-from io import StringIO, BytesIO
+import rospy
+from std_msgs.msg import String
+import simpleaudio as sa
 from picotts import PicoTTS
 
-chunk = 1024
-
 picotts = PicoTTS()
-wavs = picotts.synth_wav('Hello World! Doing more testing')
-wav = wave.open(BytesIO(wavs), 'rb')
+picotts.voice = 'en-GB'
 
-p = pyaudio.PyAudio()
 
-print(wav.getframerate())
-print(type(wav.getframerate()))
+def cb_speak(msg):
+    wav = picotts.synth_wav(msg)
+    wav = sa.WaveObject(wav, 2, 2, 8000)
+    another_obj = wav.play()
+    another_obj.wait_done()
 
-# Open a .Stream object to write the WAV file to
-# 'output = True' indicates that the sound will be played rather than recorded
-stream = p.open(format = p.get_format_from_width(wav.getsampwidth()),
-                channels = wav.getnchannels(),
-                rate = 48000,
-                output = True)
 
-print(format)
+if __name__ == '__main__':
+    rospy.init_node('voice')
+    voice_sub = rospy.Subscriber('/voice/speak', String, cb_speak, queue_size=20)
 
-# Read data in chunks
-data = wav.readframes(chunk)
+    rospy.spin()
 
-# Play the sound by writing the audio data to the stream
-while data != '':
-    stream.write(data)
-    data = wav.readframes(chunk)
 
-# Close and terminate the stream
-stream.close()
-p.terminate()
+# Example TODO: Delete when happy with script
+# wav = picotts.synth_wav('omelette du fromage')
+# play_obj = sa.play_buffer(wav, 2, 2, 8000)
+# play_obj.wait_done()
 
-print(wav.getnchannels(), wav.getframerate(), wav.getnframes())
+# picotts.voice = 'en-GB'
+# wav = picotts.synth_wav('omelette du fromage')
+# wav = sa.WaveObject(wav, 2, 2, 8000)
+# another_obj = wav.play()
+# another_obj.wait_done()

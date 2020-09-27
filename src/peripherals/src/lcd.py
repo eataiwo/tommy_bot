@@ -104,8 +104,6 @@ class Lcd:
         self._lcd_send(CLEAR_DSP, LCD_CMD)
 
     def cb_display_line1(self, msg):
-        # TODO: Add a custom message so I can also specify the line the messages appears on ... therefore I need to
-        #  send a 0 or 1.
         self.lcd_string(msg.data, line=0)
         rospy.sleep(5.)
         self.lcd_string('Mode: Testing', 0)
@@ -121,10 +119,13 @@ if __name__ == '__main__':
 
     lcd = Lcd()
     lcd.setup()
+
     lcd.lcd_string('Starting up', 0)
     rospy.sleep(5)
+
     lcd.lcd_string('Ready', 0)
     rospy.sleep(5)
-    
+
     lcd.lcd_string('Mode: Testing', 0)
+
     rospy.spin()

@@ -64,7 +64,9 @@ def indicate():
         pixels.show()
         time.sleep(0.25)
 
-def pulse ()
+
+def pulse():
+    pass
 
 
 while True:
