@@ -17,7 +17,7 @@ import sys
 import RPi.GPIO as GPIO
 from time import sleep
 import rospy
-from src.powertrain.utils import stepdelay_check, speed_check, dist_2_steps, percent_to_stepdelay, stepdelay_to_percent, deg_2_steps
+from utils import stepdelay_check, speed_check, dist_2_steps, percent_to_stepdelay, stepdelay_to_percent, deg_2_steps
 from std_msgs.msg import Float64, String, Bool
 
 # Stepper motors are wired so all motors rotate its wheel forward when set to clockwise. i.e. the motors
