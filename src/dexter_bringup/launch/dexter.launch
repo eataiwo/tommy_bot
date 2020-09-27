@@ -1,0 +1,6 @@
+<launch>
+
+   <include file="$(find powertrain)/launch/powertrain.launch"/>
+   <include file="$(find webapp)/launch/webapp.launch"/>
+
+</launch>

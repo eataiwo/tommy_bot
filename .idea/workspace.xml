@@ -27,7 +27,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8721ce3d-f5cf-4215-8250-19be014edc55" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/webapp/launch/webapp.launch" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -221,7 +220,14 @@
       <option name="project" value="LOCAL" />
       <updated>1601218110748</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="Update: Added launch file for webapp">
+      <created>1601218758518</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1601218758518</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -268,7 +274,8 @@
     <MESSAGE value="Update: Add powertrain launch file" />
     <MESSAGE value="Fix: Powertrain process not shutting down with ROS" />
     <MESSAGE value="Update: Cleaned up powertrain node" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update: Cleaned up powertrain node" />
+    <MESSAGE value="Update: Added launch file for webapp" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update: Added launch file for webapp" />
   </component>
   <component name="WindowStateProjectService">
     <state x="240" y="75" width="1139" height="643" key="#Notifications" timestamp="1600676456839">
@@ -288,10 +295,10 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="485" y="160" key="RollbackChangesDialog/0.0.1440.900/-1920.0.1920.1080@0.0.1440.900" timestamp="1594254478957" />
-    <state x="-1493" y="228" key="Vcs.Push.Dialog.v2" timestamp="1601218113717">
+    <state x="-1493" y="228" key="Vcs.Push.Dialog.v2" timestamp="1601218763814">
       <screen x="-1920" y="0" width="1920" height="1080" />
     </state>
-    <state x="-1493" y="228" key="Vcs.Push.Dialog.v2/-1920.0.1920.1080/0.0.1440.900@-1920.0.1920.1080" timestamp="1601218113717" />
+    <state x="-1493" y="228" key="Vcs.Push.Dialog.v2/-1920.0.1920.1080/0.0.1440.900@-1920.0.1920.1080" timestamp="1601218763814" />
     <state x="320" y="190" key="Vcs.Push.Dialog.v2/-1920.0.1920.1080/0.0.1440.900@0.0.1440.900" timestamp="1601073448230" />
     <state x="-1493" y="228" key="Vcs.Push.Dialog.v2/0.0.1440.900/-1920.0.1920.1080@-1920.0.1920.1080" timestamp="1594242602148" />
     <state x="320" y="190" key="Vcs.Push.Dialog.v2/0.0.1440.900/-1920.0.1920.1080@0.0.1440.900" timestamp="1594342716388" />
