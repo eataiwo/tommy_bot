@@ -1,0 +1,8 @@
+prefix=/home/pi/Github/Dexter_ROS/devel
+
+Name: dexter_bringup
+Description: Description of dexter_bringup
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
