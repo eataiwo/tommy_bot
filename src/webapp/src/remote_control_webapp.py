@@ -3,7 +3,7 @@
 import RPi.GPIO as GPIO
 import rospy
 import signal, sys
-from flask import Flask, render_template, request, redirect, url_for, make_response
+from flask import Flask, render_template, request, redirect, url_for, make_response, Response
 from std_msgs.msg import Float64, String, Bool
 from camera import Camera
 
