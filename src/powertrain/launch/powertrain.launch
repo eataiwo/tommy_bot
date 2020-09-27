@@ -1,0 +1,5 @@
+<launch>
+
+    <node name="powertrain" pkg="powertrain" type="powertrain.py" />
+
+</launch>
