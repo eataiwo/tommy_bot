@@ -247,7 +247,7 @@ if __name__ == "__main__":
     dexter = Powertrain()
     dexter.setup()
 
-    while True:
+    while not rospy.is_shutdown():
         # TODO: Delete if new script working
         # if dexter.pwr_save:
         #     rospy.sleep(1)
