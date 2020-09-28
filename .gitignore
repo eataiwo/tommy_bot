@@ -137,5 +137,5 @@ dmypy.json
 /src/_peripherals
 /src/_sensors
 /src/administrator/src/archive
-
+/src/peripherals/src/archive
 

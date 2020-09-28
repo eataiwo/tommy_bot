@@ -42,7 +42,7 @@ LCD_INIT = [
     0x32,  # 110010 Initialise
     0x06,  # 000110 Cursor move direction
     0x0C,  # 001100 Display On,Cursor Off, Blink Off
-    0x28  # 101000 Data length, number of lines, font size
+    0x28   # 101000 Data length, number of lines, font size
 ]
 
 
@@ -56,8 +56,10 @@ class Lcd:
         self._bus = None
         self._n_err = 0
         self._backlight = None
+        self.robot_mode = ''
         self.lcd_sub = rospy.Subscriber("/lcd_display/line1", String, self.cb_display_line1, queue_size=10)
         self.lcd_sub = rospy.Subscriber("/lcd_display/line2", String, self.cb_display_line2, queue_size=10)
+        self.lcd_sub = rospy.Subscriber("/mode", String, self.cb_current_mode, queue_size=10)
 
     def backlight(self, on=True):
         if on:
@@ -106,12 +108,14 @@ class Lcd:
     def cb_display_line1(self, msg):
         self.lcd_string(msg.data, line=0)
         rospy.sleep(5.)
-        self.lcd_string('Mode: Testing', 0)
+        self.lcd_string(f'Mode: {self.robot_mode}', 0)
 
     def cb_display_line2(self, msg):
         self.lcd_string(msg.data, line=1)
         rospy.sleep(5.)
-        # rospy.loginfo('Callback 2 done')
+
+    def cb_current_mode(self, msg):
+        self.robot_mode = msg.data
 
 
 if __name__ == '__main__':
@@ -121,11 +125,9 @@ if __name__ == '__main__':
     lcd.setup()
 
     lcd.lcd_string('Starting up', 0)
-    rospy.sleep(5)
+    rospy.sleep(2)
 
     lcd.lcd_string('Ready', 0)
-    rospy.sleep(5)
-
-    lcd.lcd_string('Mode: Testing', 0)
+    rospy.sleep(3)
 
     rospy.spin()
