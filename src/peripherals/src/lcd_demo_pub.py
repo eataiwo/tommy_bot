@@ -17,13 +17,12 @@ if __name__ == '__main__':
     rospy.init_node('lcd_demo_pub')
 
     while not rospy.is_shutdown():
-        lcd_msg1.data = "I'm ALIVE!!!!"
+        # lcd_msg1.data = "I'm ALIVE!!!!"
         lcd_msg2.data = 'Come closer'
         lcd_msg3.data = 'I want to tell'
         lcd_msg4.data = 'you a secret'
 
-        lcd_pub1.publish(lcd_msg1)
-        rospy.sleep(1)
+        # lcd_pub1.publish(lcd_msg1)
         lcd_pub2.publish(lcd_msg2)
         rospy.sleep(1)
         lcd_pub3.publish(lcd_msg3)
@@ -33,11 +32,9 @@ if __name__ == '__main__':
 
         rospy.sleep(10)
 
-        lcd_msg1.data = lcd_msg2.data = lcd_msg3.data = lcd_msg4.data = 'BOO!!!!!'
-        rospy.loginfo(f'{lcd_msg1.data} {lcd_msg2.data} {lcd_msg3.data} {lcd_msg4.data}')
+        lcd_msg2.data = lcd_msg3.data = lcd_msg4.data = 'BOO!!!!!'
+        rospy.loginfo(f'{lcd_msg2.data} {lcd_msg3.data} {lcd_msg4.data}')
 
-        lcd_pub1.publish(lcd_msg1)
-        rospy.sleep(0.2)
         lcd_pub2.publish(lcd_msg2)
         rospy.sleep(0.2)
         lcd_pub3.publish(lcd_msg3)

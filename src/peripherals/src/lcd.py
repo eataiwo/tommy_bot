@@ -136,12 +136,4 @@ if __name__ == '__main__':
     rospy.sleep(3)
 
     lcd.lcd_string('Ready', LCD_LINE_1)
-    rospy.sleep(3)
-
-    # lcd.lcd_string('Monday', LCD_LINE_1)
-    # lcd.lcd_string('Tuesday', LCD_LINE_2)
-    # lcd.lcd_string('Wednesday', LCD_LINE_3)
-    # lcd.lcd_string('Thursday', LCD_LINE_4)
-    # rospy.sleep(5)
-    rospy.loginfo('testing done')
     rospy.spin()
