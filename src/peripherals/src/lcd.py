@@ -68,7 +68,7 @@ class Lcd:
         self.lcd_byte(0x28, LCD_CMD)  # 101000 Data length, number of lines, font size
         self.lcd_byte(0x01, LCD_CMD)  # 000001 Clear display
         rospy.sleep(E_DELAY)
-        rospy.info('Setup done')
+        rospy.loginfo('Setup done')
 
     def lcd_toggle_enable(self, bits):
         # Toggle enable
@@ -143,5 +143,5 @@ if __name__ == '__main__':
     lcd.lcd_string('Wednesday', LCD_LINE_3)
     lcd.lcd_string('Thursday', LCD_LINE_4)
     rospy.sleep(5)
-    rospy.info('testing done')
+    rospy.loginfo('testing done')
     #rospy.spin()
