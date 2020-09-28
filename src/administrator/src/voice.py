@@ -10,7 +10,7 @@ picotts.voice = 'en-GB'
 
 
 def cb_speak(msg):
-    wav = picotts.synth_wav(msg)
+    wav = picotts.synth_wav(msg.data)
     wav = sa.WaveObject(wav, 2, 2, 8000)
     another_obj = wav.play()
     another_obj.wait_done()
