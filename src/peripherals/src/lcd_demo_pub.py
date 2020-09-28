@@ -16,13 +16,15 @@ lcd_msg4 = String()
 if __name__ == '__main__':
     rospy.init_node('lcd_demo_pub')
 
+    lcd_msg1.data = "I'm ALIVE!!!!"
+    lcd_pub1.publish(lcd_msg1)
+    rospy.sleep(0.2)
+
     while not rospy.is_shutdown():
-        # lcd_msg1.data = "I'm ALIVE!!!!"
         lcd_msg2.data = 'Come closer'
         lcd_msg3.data = 'I want to tell'
         lcd_msg4.data = 'you a secret'
 
-        # lcd_pub1.publish(lcd_msg1)
         lcd_pub2.publish(lcd_msg2)
         rospy.sleep(1)
         lcd_pub3.publish(lcd_msg3)
