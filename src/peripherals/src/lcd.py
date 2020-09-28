@@ -52,7 +52,7 @@ class Lcd:
         self._bus = None
         self._n_err = 0
         self._backlight = None
-        self.robot_mode = ''
+        self.robot_mode = 'Unknown'
         self.lcd_sub = rospy.Subscriber("/lcd_display/line1", String, self.cb_display_line1, queue_size=10)
         self.lcd_sub = rospy.Subscriber("/lcd_display/line2", String, self.cb_display_line2, queue_size=10)
         self.lcd_sub = rospy.Subscriber("/lcd_display/line3", String, self.cb_display_line3, queue_size=10)
@@ -107,20 +107,20 @@ class Lcd:
 
     def cb_display_line1(self, msg):
         self.lcd_string(msg.data, LCD_LINE_1)
-        rospy.sleep(10)
-        #self.lcd_string(f'Mode: {self.robot_mode}', LCD_LINE_1)
+        rospy.sleep(5)
+        self.lcd_string(f'Mode: {self.robot_mode}', LCD_LINE_1)
 
     def cb_display_line2(self, msg):
         self.lcd_string(msg.data, LCD_LINE_2)
-        #rospy.sleep(0.5)
+        rospy.sleep(5)
 
     def cb_display_line3(self, msg):
         self.lcd_string(msg.data, LCD_LINE_3)
-        #rospy.sleep(0.5)
+        rospy.sleep(5)
 
     def cb_display_line4(self, msg):
         self.lcd_string(msg.data, LCD_LINE_4)
-        #rospy.sleep(0.5)
+        rospy.sleep(5)
 
     def cb_current_mode(self, msg):
         self.robot_mode = msg.data
@@ -138,10 +138,10 @@ if __name__ == '__main__':
     lcd.lcd_string('Ready', LCD_LINE_1)
     rospy.sleep(3)
 
-    lcd.lcd_string('Monday', LCD_LINE_1)
-    lcd.lcd_string('Tuesday', LCD_LINE_2)
-    lcd.lcd_string('Wednesday', LCD_LINE_3)
-    lcd.lcd_string('Thursday', LCD_LINE_4)
-    rospy.sleep(5)
+    # lcd.lcd_string('Monday', LCD_LINE_1)
+    # lcd.lcd_string('Tuesday', LCD_LINE_2)
+    # lcd.lcd_string('Wednesday', LCD_LINE_3)
+    # lcd.lcd_string('Thursday', LCD_LINE_4)
+    # rospy.sleep(5)
     rospy.loginfo('testing done')
     rospy.spin()
