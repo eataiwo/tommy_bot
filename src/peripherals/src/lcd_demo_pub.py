@@ -7,7 +7,7 @@ lcd_pub1 = rospy.Publisher('lcd_display/line1', String, queue_size=10)
 lcd_pub2 = rospy.Publisher('lcd_display/line2', String, queue_size=10)
 lcd_pub3 = rospy.Publisher('lcd_display/line3', String, queue_size=10)
 lcd_pub4 = rospy.Publisher('lcd_display/line4', String, queue_size=10)
-speak_pub = rospy.Publisher('voice/speech', String, queue_size=10)
+speak_pub = rospy.Publisher('voice/speak', String, queue_size=10)
 
 lcd_msg1 = String()
 lcd_msg2 = String()
