@@ -120,12 +120,16 @@ def main():
         # Send some test
         lcd_string("RPiSpy         <", LCD_LINE_1)
         lcd_string("I2C LCD        <", LCD_LINE_2)
+        lcd_string("Testing         <", LCD_LINE_3)
+        lcd_string("My screen        <", LCD_LINE_4)
 
         time.sleep(3)
 
         # Send some more text
         lcd_string(">         RPiSpy", LCD_LINE_1)
         lcd_string(">        I2C LCD", LCD_LINE_2)
+        lcd_string(">         Testing", LCD_LINE_3)
+        lcd_string(">        My screen", LCD_LINE_4)
 
         time.sleep(3)
 
