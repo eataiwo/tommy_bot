@@ -18,7 +18,7 @@ from std_msgs.msg import String
 
 I2C_ADDR = 0x27  # default I2C device address
 I2C_BUS = 1  # default I2C bus on Pi
-LCD_WIDTH = 16  # Maximum characters per line
+LCD_WIDTH = 20  # Maximum characters per line
 
 # Define some device constants
 LCD_CHR = 1  # Mode - Sending data
@@ -26,7 +26,9 @@ LCD_CMD = 0  # Mode - Sending command
 
 LCD_LINE = [
     0x80,  # LCD RAM address for the 1st line
-    0xC0  # LCD RAM address for the 2nd line
+    0xC0,  # LCD RAM address for the 2nd line
+    0x94,
+    0xD4
 ]
 
 LCD_BACKLIGHT = 0x08
@@ -42,7 +44,8 @@ LCD_INIT = [
     0x32,  # 110010 Initialise
     0x06,  # 000110 Cursor move direction
     0x0C,  # 001100 Display On,Cursor Off, Blink Off
-    0x28   # 101000 Data length, number of lines, font size
+    0x28,   # 101000 Data length, number of lines, font size
+    0x01   # Clear display
 ]
 
 
@@ -59,6 +62,8 @@ class Lcd:
         self.robot_mode = ''
         self.lcd_sub = rospy.Subscriber("/lcd_display/line1", String, self.cb_display_line1, queue_size=10)
         self.lcd_sub = rospy.Subscriber("/lcd_display/line2", String, self.cb_display_line2, queue_size=10)
+        self.lcd_sub = rospy.Subscriber("/lcd_display/line3", String, self.cb_display_line3, queue_size=10)
+        self.lcd_sub = rospy.Subscriber("/lcd_display/line4", String, self.cb_display_line4, queue_size=10)
         self.lcd_sub = rospy.Subscriber("/mode", String, self.cb_current_mode, queue_size=10)
 
     def backlight(self, on=True):
@@ -112,6 +117,14 @@ class Lcd:
 
     def cb_display_line2(self, msg):
         self.lcd_string(msg.data, line=1)
+        rospy.sleep(5.)
+
+    def cb_display_line3(self, msg):
+        self.lcd_string(msg.data, line=2)
+        rospy.sleep(5.)
+
+    def cb_display_line4(self, msg):
+        self.lcd_string(msg.data, line=3)
         rospy.sleep(5.)
 
     def cb_current_mode(self, msg):
