@@ -70,6 +70,14 @@ class Lcd:
         self.lcd_byte(0x01, LCD_CMD)  # 000001 Clear display
         sleep(E_DELAY)
 
+    def lcd_toggle_enable(self, bits):
+        # Toggle enable
+        sleep(E_DELAY)
+        bus.write_byte(self._addr, (bits | ENABLE))
+        sleep(E_PULSE)
+        bus.write_byte(self._addr, (bits & ~ENABLE))
+        sleep(E_DELAY)
+
     def lcd_byte(self, bits, mode):
         # Send byte to data pins
         # bits = the data
@@ -81,29 +89,21 @@ class Lcd:
 
         # High bits
         bus.write_byte(self._addr, bits_high)
-        lcd_toggle_enable(bits_high)
+        self.lcd_toggle_enable(bits_high)
 
         # Low bits
         bus.write_byte(self._addr, bits_low)
-        lcd_toggle_enable(bits_low)
-
-    def lcd_toggle_enable(self, bits):
-        # Toggle enable
-        sleep(E_DELAY)
-        bus.write_byte(self._addr, (bits | ENABLE))
-        sleep(E_PULSE)
-        bus.write_byte(self._addr, (bits & ~ENABLE))
-        sleep(E_DELAY)
+        self.lcd_toggle_enable(bits_low)
 
     def lcd_string(self, message, line):
         # Send string to display
 
         message = message.ljust(LCD_WIDTH, " ")
 
-        lcd_byte(line, LCD_CMD)
+        self.lcd_byte(line, LCD_CMD)
 
         for i in range(LCD_WIDTH):
-            lcd_byte(ord(message[i]), LCD_CHR)
+            self.lcd_byte(ord(message[i]), LCD_CHR)
 
     def cb_display_line1(self, msg):
         self.lcd_string(msg.data, LCD_LINE_1)
