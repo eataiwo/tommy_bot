@@ -101,7 +101,7 @@ class Lcd:
                 print(ex)
 
     def lcd_string(self, message, line):
-        assert line == 0 or line == 1, 'Line is 0 or 1.'
+        assert line == 0 or line == 1 or line == 2 or line == 3, 'Line is 0 or 1.'
         self._lcd_send(LCD_LINE[line], LCD_CMD)
         # right fill message with space and limit to width
         for c in message.ljust(LCD_WIDTH, " ")[:20]:
