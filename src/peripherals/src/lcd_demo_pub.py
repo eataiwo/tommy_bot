@@ -36,8 +36,8 @@ if __name__ == '__main__':
 
         rospy.sleep(5)
 
-        lcd_msg2.data = lcd_msg3.data = lcd_msg4.data = 'BOO'
-        speech_msg.data = 'BOOO'
+        lcd_msg2.data = lcd_msg3.data = lcd_msg4.data = 'POOP'
+        speech_msg.data = 'POOP'
         rospy.loginfo(f'{lcd_msg2.data} {lcd_msg3.data} {lcd_msg4.data}')
 
         lcd_pub2.publish(lcd_msg2)
