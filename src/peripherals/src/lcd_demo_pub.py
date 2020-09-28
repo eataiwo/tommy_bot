@@ -25,9 +25,9 @@ if __name__ == '__main__':
         # lcd_msg4.data = 'you a secret'
 
         lcd_pub1.publish(lcd_msg1)
-        #rospy.sleep(0.1)
+        rospy.sleep(0.1)
         lcd_pub2.publish(lcd_msg2)
-        #rospy.sleep(0.1)
+        rospy.sleep(0.1)
         # lcd_pub3.publish(lcd_msg3)
         # rospy.sleep(0.1)
         # lcd_pub4.publish(lcd_msg4)
