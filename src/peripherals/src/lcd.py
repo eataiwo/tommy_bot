@@ -13,7 +13,6 @@ See https: // github.com/sensemakersamsterdam/astroplant_explorer
 
 import smbus
 import rospy
-from time import sleep
 from std_msgs.msg import String
 
 # Define some device parameters
@@ -68,15 +67,15 @@ class Lcd:
         self.lcd_byte(0x0C, LCD_CMD)  # 001100 Display On,Cursor Off, Blink Off
         self.lcd_byte(0x28, LCD_CMD)  # 101000 Data length, number of lines, font size
         self.lcd_byte(0x01, LCD_CMD)  # 000001 Clear display
-        sleep(E_DELAY)
+        rospy.sleep(E_DELAY)
 
     def lcd_toggle_enable(self, bits):
         # Toggle enable
-        sleep(E_DELAY)
+        rospy.sleep(E_DELAY)
         bus.write_byte(self._addr, (bits | ENABLE))
-        sleep(E_PULSE)
+        rospy.sleep(E_PULSE)
         bus.write_byte(self._addr, (bits & ~ENABLE))
-        sleep(E_DELAY)
+        rospy.sleep(E_DELAY)
 
     def lcd_byte(self, bits, mode):
         # Send byte to data pins
@@ -115,7 +114,7 @@ class Lcd:
         rospy.sleep(5.)
 
     def cb_display_line3(self, msg):
-        self.lcd_string(msg.data, LCD_LINE_3)
+        self.lcd_string("Basic testing", LCD_LINE_3)
         rospy.sleep(5.)
 
     def cb_display_line4(self, msg):
@@ -132,10 +131,16 @@ if __name__ == '__main__':
     lcd = Lcd()
     lcd.setup()
 
-    lcd.lcd_string('Starting up', 0)
+    lcd.lcd_string('Starting up', LCD_LINE_1)
     rospy.sleep(2)
 
-    lcd.lcd_string('Ready', 0)
+    lcd.lcd_string('Ready', LCD_LINE_1)
     rospy.sleep(3)
+
+    lcd.lcd_string('Monday', LCD_LINE_1)
+    lcd.lcd_string('Tuesday', LCD_LINE_2)
+    lcd.lcd_string('Wednesday', LCD_LINE_3)
+    lcd.lcd_string('Thursday', LCD_LINE_4)
+    rospy.sleep(5)
 
     rospy.spin()
