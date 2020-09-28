@@ -16,44 +16,38 @@ import rospy
 from time import sleep
 from std_msgs.msg import String
 
-I2C_ADDR = 0x27  # default I2C device address
-I2C_BUS = 1  # default I2C bus on Pi
+# Define some device parameters
+I2C_ADDR = 0x27  # I2C device address
 LCD_WIDTH = 20  # Maximum characters per line
 
 # Define some device constants
 LCD_CHR = 1  # Mode - Sending data
 LCD_CMD = 0  # Mode - Sending command
 
-LCD_LINE = [
-    0x80,  # LCD RAM address for the 1st line
-    0xC0,  # LCD RAM address for the 2nd line
-    0x94,
-    0xD4
-]
+LCD_LINE_1 = 0x80  # LCD RAM address for the 1st line
+LCD_LINE_2 = 0xC0  # LCD RAM address for the 2nd line
+LCD_LINE_3 = 0x94  # LCD RAM address for the 3rd line
+LCD_LINE_4 = 0xD4  # LCD RAM address for the 4th line
 
-LCD_BACKLIGHT = 0x08
+LCD_BACKLIGHT = 0x08  # On
+# LCD_BACKLIGHT = 0x00  # Off
 
 ENABLE = 0b00000100  # Enable bit
 
+# Timing constants
+E_PULSE = 0.0005
 E_DELAY = 0.0005
 
-CLEAR_DSP = 0x01  # 000001 Clear display
-
-LCD_INIT = [
-    0x33,  # 110011 Initialise
-    0x32,  # 110010 Initialise
-    0x06,  # 000110 Cursor move direction
-    0x0C,  # 001100 Display On,Cursor Off, Blink Off
-    0x28,   # 101000 Data length, number of lines, font size
-    0x01   # Clear display
-]
+# Open I2C interface
+# bus = smbus.SMBus(0)  # Rev 1 Pi uses 0
+bus = smbus.SMBus(1)  # Rev 2 Pi uses 1
 
 
 class Lcd:
     """Class to control the 16x2 LCD display with Hitachi controller.
     """
 
-    def __init__(self, i2c_address=I2C_ADDR, i2c_bus=I2C_BUS):
+    def __init__(self, i2c_address=I2C_ADDR, i2c_bus=1):
         self._addr = i2c_address
         self._bus_number = i2c_bus
         self._bus = None
@@ -66,65 +60,66 @@ class Lcd:
         self.lcd_sub = rospy.Subscriber("/lcd_display/line4", String, self.cb_display_line4, queue_size=10)
         self.lcd_sub = rospy.Subscriber("/mode", String, self.cb_current_mode, queue_size=10)
 
-    def backlight(self, on=True):
-        if on:
-            self._backlight = LCD_BACKLIGHT
-        else:
-            pass
+    def setup(self):
+        # Initialise display
+        self.lcd_byte(0x33, LCD_CMD)  # 110011 Initialise
+        self.lcd_byte(0x32, LCD_CMD)  # 110010 Initialise
+        self.lcd_byte(0x06, LCD_CMD)  # 000110 Cursor move direction
+        self.lcd_byte(0x0C, LCD_CMD)  # 001100 Display On,Cursor Off, Blink Off
+        self.lcd_byte(0x28, LCD_CMD)  # 101000 Data length, number of lines, font size
+        self.lcd_byte(0x01, LCD_CMD)  # 000001 Clear display
+        sleep(E_DELAY)
 
-    def setup(self, erase=True):
-        self._bus = smbus.SMBus(I2C_BUS)
-        for cmd in LCD_INIT:
-            self._lcd_send(cmd, LCD_CMD)
-        if erase:
-            self.lcd_clear()
+    def lcd_byte(self, bits, mode):
+        # Send byte to data pins
+        # bits = the data
+        # mode = 1 for data
+        #        0 for command
 
-    def _lcd_send(self, bits, mode):
+        bits_high = mode | (bits & 0xF0) | LCD_BACKLIGHT
+        bits_low = mode | ((bits << 4) & 0xF0) | LCD_BACKLIGHT
 
-        def strobe(bits):
-            # Write with enable high
-            addr = self._addr
-            self._bus.write_byte(addr, (bits | ENABLE))
-            sleep(E_DELAY)  # Time to settle
-            self._bus.write_byte(addr, (bits & ~ENABLE))  # strobe in the data
-            sleep(E_DELAY)  # Time to capture the data
+        # High bits
+        bus.write_byte(self._addr, bits_high)
+        lcd_toggle_enable(bits_high)
 
-        try:
-            strobe(mode | (bits & 0xF0) | LCD_BACKLIGHT)  # High bits first
-            strobe(mode | ((bits << 4) & 0xF0) |
-                   LCD_BACKLIGHT)  # Low bits second
-        except Exception as ex:
-            self._n_err += 1
-            if self._n_err == 4:
-                print(ex, '- further errors will be suppressed.')
-            elif self._n_err < 4:
-                print(ex)
+        # Low bits
+        bus.write_byte(self._addr, bits_low)
+        lcd_toggle_enable(bits_low)
+
+    def lcd_toggle_enable(self, bits):
+        # Toggle enable
+        sleep(E_DELAY)
+        bus.write_byte(self._addr, (bits | ENABLE))
+        sleep(E_PULSE)
+        bus.write_byte(self._addr, (bits & ~ENABLE))
+        sleep(E_DELAY)
 
     def lcd_string(self, message, line):
-        assert line == 0 or line == 1 or line == 2 or line == 3, 'Line is 0 or 1.'
-        self._lcd_send(LCD_LINE[line], LCD_CMD)
-        # right fill message with space and limit to width
-        for c in message.ljust(LCD_WIDTH, " ")[:20]:
-            self._lcd_send(ord(c), LCD_CHR)
+        # Send string to display
 
-    def lcd_clear(self):
-        self._lcd_send(CLEAR_DSP, LCD_CMD)
+        message = message.ljust(LCD_WIDTH, " ")
+
+        lcd_byte(line, LCD_CMD)
+
+        for i in range(LCD_WIDTH):
+            lcd_byte(ord(message[i]), LCD_CHR)
 
     def cb_display_line1(self, msg):
-        self.lcd_string(msg.data, line=0)
+        self.lcd_string(msg.data, LCD_LINE_1)
         rospy.sleep(5.)
-        self.lcd_string(f'Mode: {self.robot_mode}', 0)
+        self.lcd_string(f'Mode: {self.robot_mode}', LCD_LINE_1)
 
     def cb_display_line2(self, msg):
-        self.lcd_string(msg.data, line=1)
+        self.lcd_string(msg.data, LCD_LINE_2)
         rospy.sleep(5.)
 
     def cb_display_line3(self, msg):
-        self.lcd_string(msg.data, line=2)
+        self.lcd_string(msg.data, LCD_LINE_3)
         rospy.sleep(5.)
 
     def cb_display_line4(self, msg):
-        self.lcd_string(msg.data, line=3)
+        self.lcd_string(msg.data, LCD_LINE_4)
         rospy.sleep(5.)
 
     def cb_current_mode(self, msg):

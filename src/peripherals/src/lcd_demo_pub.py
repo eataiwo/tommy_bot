@@ -32,7 +32,7 @@ if __name__ == '__main__':
 
         rospy.sleep(20)
 
-        lcd_msg1.data, lcd_msg2.data, lcd_msg3.data,lcd_msg4.data = test_string[4]
+        lcd_msg1.data = lcd_msg2.data = lcd_msg3.data = lcd_msg4.data = test_string[4]
 
         lcd_pub1.publish(lcd_msg1)
         lcd_pub2.publish(lcd_msg2)
