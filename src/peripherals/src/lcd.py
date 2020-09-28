@@ -144,4 +144,4 @@ if __name__ == '__main__':
     lcd.lcd_string('Thursday', LCD_LINE_4)
     rospy.sleep(5)
     rospy.loginfo('testing done')
-    #rospy.spin()
+    rospy.spin()
