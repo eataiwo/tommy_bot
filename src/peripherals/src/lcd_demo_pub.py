@@ -24,25 +24,30 @@ if __name__ == '__main__':
 
         lcd_pub1.publish(lcd_msg1)
         rospy.sleep(1)
-        lcd_pub2.publish(lcd_msg2)
-        rospy.sleep(1)
-        lcd_pub3.publish(lcd_msg3)
-        rospy.sleep(1)
-        lcd_pub4.publish(lcd_msg4)
-        rospy.sleep(1)
-
-        rospy.sleep(4)
-
-        lcd_msg1.data = lcd_msg2.data = lcd_msg3.data = lcd_msg4.data = 'BOO!!!!!'
-        rospy.loginfo(f'{lcd_msg1.data} {lcd_msg2.data} {lcd_msg3.data} {lcd_msg4.data}')
+        lcd_msg1.data = "Delay time"
 
         lcd_pub1.publish(lcd_msg1)
-        rospy.sleep(0.2)
-        lcd_pub2.publish(lcd_msg2)
-        rospy.sleep(0.2)
-        lcd_pub3.publish(lcd_msg3)
-        rospy.sleep(0.2)
-        lcd_pub4.publish(lcd_msg4)
-        rospy.sleep(0.2)
 
-        rospy.sleep(4)
+        rospy.sleep(1)
+        # lcd_pub2.publish(lcd_msg2)
+        # rospy.sleep(1)
+        # lcd_pub3.publish(lcd_msg3)
+        # rospy.sleep(1)
+        # lcd_pub4.publish(lcd_msg4)
+        # rospy.sleep(1)
+        #
+        # rospy.sleep(4)
+        #
+        # lcd_msg1.data = lcd_msg2.data = lcd_msg3.data = lcd_msg4.data = 'BOO!!!!!'
+        # rospy.loginfo(f'{lcd_msg1.data} {lcd_msg2.data} {lcd_msg3.data} {lcd_msg4.data}')
+        #
+        # lcd_pub1.publish(lcd_msg1)
+        # rospy.sleep(0.2)
+        # lcd_pub2.publish(lcd_msg2)
+        # rospy.sleep(0.2)
+        # lcd_pub3.publish(lcd_msg3)
+        # rospy.sleep(0.2)
+        # lcd_pub4.publish(lcd_msg4)
+        # rospy.sleep(0.2)
+        #
+        # rospy.sleep(4)

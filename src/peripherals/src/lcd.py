@@ -107,7 +107,7 @@ class Lcd:
 
     def cb_display_line1(self, msg):
         self.lcd_string(msg.data, LCD_LINE_1)
-        #rospy.sleep(0.5)
+        rospy.sleep(10)
         #self.lcd_string(f'Mode: {self.robot_mode}', LCD_LINE_1)
 
     def cb_display_line2(self, msg):
