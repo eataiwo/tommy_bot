@@ -115,7 +115,7 @@ class Lcd:
         rospy.sleep(5.)
 
     def cb_display_line3(self, msg):
-        self.lcd_string("Basic testing", LCD_LINE_3)
+        self.lcd_string(msg.data, LCD_LINE_3)
         rospy.sleep(5.)
 
     def cb_display_line4(self, msg):
