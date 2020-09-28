@@ -32,7 +32,7 @@ if __name__ == '__main__':
         lcd_pub4.publish(lcd_msg4)
         rospy.sleep(1)
 
-        rospy.sleep(10)
+        rospy.sleep(5)
 
         lcd_msg2.data = lcd_msg3.data = lcd_msg4.data = 'BOO!!!!!'
         rospy.loginfo(f'{lcd_msg2.data} {lcd_msg3.data} {lcd_msg4.data}')
