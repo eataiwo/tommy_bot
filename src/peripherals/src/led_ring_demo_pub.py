@@ -1,95 +1,46 @@
-import time
-import board
-import neopixel
+#!/usr/bin/env python
 
-# On CircuitPlayground Express, and boards with built in status NeoPixel -> board.NEOPIXEL
-# Otherwise choose an open pin connected to the Data In of the NeoPixel strip, i.e. board.D1
-# pixel_pin = board.NEOPIXEL
+# Same as mode_demo_pub
 
-# On a Raspberry pi, use this instead, not all pins are supported
-pixel_pin = board.D12
+import rospy
+import random
+from std_msgs.msg import String
 
-# The number of NeoPixels
-num_pixels = 12
+mode_req_msg = String()
+mode = ['booting', 'standby', 'alert', 'low_battery', 'busy']
+mode_select = 0
 
-# The order of the pixel colors - RGB or GRB. Some NeoPixels have red and green reversed!
-# For RGBW NeoPixels, simply change the ORDER to RGBW or GRBW.
-ORDER = neopixel.GRB
+if __name__ == '__main__':
+    rospy.init_node('mode_change_request_pub')
+    mode_req = rospy.Publisher('/mode/request', String, queue_size=5)
 
-pixels = neopixel.NeoPixel(
-    pixel_pin, num_pixels, brightness=0.2, auto_write=False, pixel_order=ORDER
-)
+    # For testing modes
+    mode_req_msg.data = mode[0]
+    mode_req.publish(mode_req_msg)
+    rospy.sleep(5)
 
+    for i in mode:
+        mode_req_msg.data = i
+        mode_req.publish(mode_req_msg)
+        rospy.sleep(5)
 
-def wheel(pos):
-    # Input a value 0 to 255 to get a color value.
-    # The colours are a transition r - g - b - back to r.
-    if pos < 0 or pos > 255:
-        r = g = b = 0
-    elif pos < 85:
-        r = int(pos * 3)
-        g = int(255 - pos * 3)
-        b = 0
-    elif pos < 170:
-        pos -= 85
-        r = int(255 - pos * 3)
-        g = 0
-        b = int(pos * 3)
-    else:
-        pos -= 170
-        r = 0
-        g = int(pos * 3)
-        b = int(255 - pos * 3)
-    return (r, g, b) if ORDER in (neopixel.RGB, neopixel.GRB) else (r, g, b, 0)
+        rate = rospy.Rate(1)
 
+    while not rospy.is_shutdown():
+        mode_select = random.randint(1, 5)
+        rospy.sleep(10)
+        if mode_select == 1:  # placeholder logic
+            mode_req_msg.data = 'booting'
+        elif mode_select == 2:  # placeholder logic
+            mode_req_msg.data = 'standby'
+        elif mode_select == 3:  # placeholder logic
+            mode_req_msg.data = 'alert'
+        elif mode_select == 4:
+            mode_req_msg.data = 'battery_low'
+        elif mode_select == 5:
+            mode_req_msg.data = 'busy'
 
-def rainbow_cycle(wait):
-    for j in range(255):
-        for i in range(num_pixels):
-            pixel_index = (i * 256 // num_pixels) + j
-            pixels[i] = wheel(pixel_index & 255)
-        pixels.show()
-        time.sleep(wait)
+        mode_req.publish(mode_req_msg)
 
+        rate.sleep()
 
-def indicate():
-    for j in range(11):
-        for i in range(0, 6):
-            pixels[i] = (225, 225, 0)
-        for k in range(6, 12):
-            pixels[k] = (0, 0, 0)
-        pixels.show()
-        time.sleep(0.5)
-        pixels.fill((0, 0, 0))
-        pixels.show()
-        time.sleep(0.25)
-
-
-def pulse():
-    pass
-
-
-while True:
-    # Comment this line out if you have RGBW/GRBW NeoPixels
-    pixels.fill((255, 0, 0))
-    # Uncomment this line if you have RGBW/GRBW NeoPixels
-    # pixels.fill((255, 0, 0, 0))
-    pixels.show()
-    time.sleep(1)
-
-    # Comment this line out if you have RGBW/GRBW NeoPixels
-    pixels.fill((0, 255, 0))
-    # Uncomment this line if you have RGBW/GRBW NeoPixels
-    # pixels.fill((0, 255, 0, 0))
-    pixels.show()
-    time.sleep(1)
-
-    # Comment this line out if you have RGBW/GRBW NeoPixels
-    pixels.fill((0, 0, 255))
-    # Uncomment this line if you have RGBW/GRBW NeoPixels
-    # pixels.fill((0, 0, 255, 0))
-    pixels.show()
-    time.sleep(1)
-
-    rainbow_cycle(0.001)  # rainbow cycle with 1ms delay per step
-    indicate()

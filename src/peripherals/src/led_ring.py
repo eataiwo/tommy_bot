@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+# To demo srcipt just run the mode publish demo
+
 import time
 import board
 import neopixel_spi as neopixel
@@ -133,7 +135,7 @@ class LedArray:
 
 
 if __name__ == '__main__':
-    rospy.init_node('lcd_array')
+    rospy.init_node('led_ring')
     led = LedArray()
 
     while not rospy.is_shutdown():

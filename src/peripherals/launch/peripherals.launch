@@ -1,5 +1,6 @@
 <launch>
 
-    <node name="lcd_display" pkg="peripherals" type="led.py" />
+    <node name="lcd_display" pkg="peripherals" type="lcd.py" />
+    <node name="led_ring" pkg="peripherals" type="led_ring.py" />
 
 </launch>
