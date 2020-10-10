@@ -3,5 +3,10 @@
    <include file="$(find tommy_bringup)/launch/tommy.launch"/>
 
    <node name="mode_change_request_pub" pkg="administrator" type="mode_demo_pub.py" />
+   <node name="voice_demo_pub" pkg="administrator" type="voice_demo_pub.py" />
+   <node name="lcd_demo_pub" pkg="peripherals" type="lcd_demo_pub.py" />
+   <node name="powertrain_demo_pub" pkg="powertrain" type="powertrain_demo_pub.py" />
+
+
 
 </launch>

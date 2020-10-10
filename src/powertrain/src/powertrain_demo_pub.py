@@ -14,7 +14,7 @@ distance_msg = Float64()
 drive_msg = Bool()
 
 speed_msg.data = 80
-distance_msg.data = 0.3
+distance_msg.data = 0.1
 drive_msg.data = True
 test_directions = ['forward', 'backward', 'left', 'right']
 
