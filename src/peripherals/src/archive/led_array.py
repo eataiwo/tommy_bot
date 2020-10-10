@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+# Controlling multiple single LEDs
+
 import rospy
 import RPi.GPIO as GPIO
 from std_msgs.msg import String

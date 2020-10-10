@@ -1,0 +1,7 @@
+<launch>
+
+   <include file="$(find tommy_bringup)/launch/tommy.launch"/>
+
+   <node name="mode_change_request_pub" pkg="administrator" type="mode_demo_pub.py" />
+
+</launch>
