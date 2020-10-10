@@ -38,8 +38,8 @@ class Dht22:
     def __init__(self, pin=SENSOR_PIN):
         self._sensor = Adafruit_DHT.DHT22
         self._pin = pin
-        self.temp_pub = rospy.Publisher('_sensors/air_temperature', Float64, queue_size=10)
-        self.hum_pub = rospy.Publisher('_sensors/humidity', Float64, queue_size=10)
+        self.temp_pub = rospy.Publisher('sensors/air_temperature', Float64, queue_size=10)
+        self.hum_pub = rospy.Publisher('sensors/humidity', Float64, queue_size=10)
 
     def read(self):
         humidity, temperature = Adafruit_DHT.read_retry(Adafruit_DHT.DHT22, self._pin)
@@ -52,6 +52,7 @@ if __name__ == "__main__":
     rospy.init_node('dht22')
     while not rospy.is_shutdown():
         dht22 = Dht22()
+        rospy.sleep(2)
         hum_msg.data, temp_msg.data = dht22.read()
         dht22.hum_pub.publish(hum_msg)
         dht22.temp_pub.publish(temp_msg)
