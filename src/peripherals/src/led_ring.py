@@ -15,7 +15,7 @@ ORDER = neopixel.GRB  # The order of the pixel colors - RGB or GRB.
 led_modes = {'booting': {'colour': (100, 100, 100), 'type': 'rainbow_cycle', 'on': 1, 'off': 0},
              'standby': {'colour': (75, 0, 130), 'type': 'pulse', 'on': 0.015, 'off': 0},
              'alert': {'colour': (255, 69, 0), 'type': 'blink', 'on': 1, 'off': 1},
-             'battery_low': {'colour': (255, 0, 0), 'type': 'blink', 'on': 0.3, 'off': 0.2},
+             'low_battery': {'colour': (255, 0, 0), 'type': 'blink', 'on': 0.3, 'off': 0.2},
              'busy': {'colour': (255, 165, 0), 'type': 'solid', 'on': 1, 'off': 0}}
 '''
 Types are solid, blink, pulse, rainbow 
