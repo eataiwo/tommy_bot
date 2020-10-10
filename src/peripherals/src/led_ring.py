@@ -2,11 +2,11 @@
 
 import time
 import board
-import neopixel
+import neopixel_spi as neopixel
 import rospy
 from std_msgs.msg import String
 
-PIXEL_PIN = board.D12  # On a Raspberry pi, use this instead, not all pins are supported
+PIXEL_PIN = board.SPI()  # On a Raspberry pi, use this instead, not all pins are supported
 NUM_PIXELS = 12  # The number of NeoPixels
 ORDER = neopixel.GRB  # The order of the pixel colors - RGB or GRB.
 
@@ -32,7 +32,7 @@ class LedArray:
         self.off = None
 
         self.led_sub = rospy.Subscriber("/mode", String, self.cb_update_led, queue_size=10)
-        self.pixels = neopixel.NeoPixel(
+        self.pixels = neopixel.NeoPixel_SPI(
             pixel_pin, num_pixels, brightness=self.brightness, auto_write=False, pixel_order=ORDER
         )
 
