@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/pi/Github/Dexter_ROS/src
+CMAKE_SOURCE_DIR = /home/pi/Github/tommy_bot/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/pi/Github/Dexter_ROS/build
+CMAKE_BINARY_DIR = /home/pi/Github/tommy_bot/build
 
 # Utility rule file for sensor_msgs_generate_messages_eus.
 
@@ -63,10 +63,10 @@ sensors/CMakeFiles/sensor_msgs_generate_messages_eus.dir/build: sensor_msgs_gene
 .PHONY : sensors/CMakeFiles/sensor_msgs_generate_messages_eus.dir/build
 
 sensors/CMakeFiles/sensor_msgs_generate_messages_eus.dir/clean:
-	cd /home/pi/Github/Dexter_ROS/build/sensors && $(CMAKE_COMMAND) -P CMakeFiles/sensor_msgs_generate_messages_eus.dir/cmake_clean.cmake
+	cd /home/pi/Github/tommy_bot/build/sensors && $(CMAKE_COMMAND) -P CMakeFiles/sensor_msgs_generate_messages_eus.dir/cmake_clean.cmake
 .PHONY : sensors/CMakeFiles/sensor_msgs_generate_messages_eus.dir/clean
 
 sensors/CMakeFiles/sensor_msgs_generate_messages_eus.dir/depend:
-	cd /home/pi/Github/Dexter_ROS/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/pi/Github/Dexter_ROS/src /home/pi/Github/Dexter_ROS/src/sensors /home/pi/Github/Dexter_ROS/build /home/pi/Github/Dexter_ROS/build/sensors /home/pi/Github/Dexter_ROS/build/sensors/CMakeFiles/sensor_msgs_generate_messages_eus.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/pi/Github/tommy_bot/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/pi/Github/tommy_bot/src /home/pi/Github/tommy_bot/src/sensors /home/pi/Github/tommy_bot/build /home/pi/Github/tommy_bot/build/sensors /home/pi/Github/tommy_bot/build/sensors/CMakeFiles/sensor_msgs_generate_messages_eus.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : sensors/CMakeFiles/sensor_msgs_generate_messages_eus.dir/depend
 

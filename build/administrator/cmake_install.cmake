@@ -1,8 +1,8 @@
-# Install script for directory: /home/pi/Github/Dexter_ROS/src/administrator
+# Install script for directory: /home/pi/Github/tommy_bot/src/administrator
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/pi/Github/Dexter_ROS/install")
+  set(CMAKE_INSTALL_PREFIX "/home/pi/Github/tommy_bot/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -38,17 +38,17 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/pi/Github/Dexter_ROS/build/administrator/catkin_generated/installspace/administrator.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/pi/Github/tommy_bot/build/administrator/catkin_generated/installspace/administrator.pc")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/administrator/cmake" TYPE FILE FILES
-    "/home/pi/Github/Dexter_ROS/build/administrator/catkin_generated/installspace/administratorConfig.cmake"
-    "/home/pi/Github/Dexter_ROS/build/administrator/catkin_generated/installspace/administratorConfig-version.cmake"
+    "/home/pi/Github/tommy_bot/build/administrator/catkin_generated/installspace/administratorConfig.cmake"
+    "/home/pi/Github/tommy_bot/build/administrator/catkin_generated/installspace/administratorConfig-version.cmake"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/administrator" TYPE FILE FILES "/home/pi/Github/Dexter_ROS/src/administrator/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/administrator" TYPE FILE FILES "/home/pi/Github/tommy_bot/src/administrator/package.xml")
 endif()
 

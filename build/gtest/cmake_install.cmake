@@ -2,7 +2,7 @@
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/pi/Github/Dexter_ROS/install")
+  set(CMAKE_INSTALL_PREFIX "/home/pi/Github/tommy_bot/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -39,7 +39,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/pi/Github/Dexter_ROS/build/gtest/googlemock/cmake_install.cmake")
+  include("/home/pi/Github/tommy_bot/build/gtest/googlemock/cmake_install.cmake")
 
 endif()
 

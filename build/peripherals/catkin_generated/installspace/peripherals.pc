@@ -1,4 +1,4 @@
-prefix=/home/pi/Github/Dexter_ROS/install
+prefix=/home/pi/Github/tommy_bot/install
 
 Name: peripherals
 Description: Description of peripherals

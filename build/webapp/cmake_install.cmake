@@ -1,8 +1,8 @@
-# Install script for directory: /home/pi/Github/Dexter_ROS/src/webapp
+# Install script for directory: /home/pi/Github/tommy_bot/src/webapp
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/pi/Github/Dexter_ROS/install")
+  set(CMAKE_INSTALL_PREFIX "/home/pi/Github/tommy_bot/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -38,17 +38,17 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/pi/Github/Dexter_ROS/build/webapp/catkin_generated/installspace/webapp.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/pi/Github/tommy_bot/build/webapp/catkin_generated/installspace/webapp.pc")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/webapp/cmake" TYPE FILE FILES
-    "/home/pi/Github/Dexter_ROS/build/webapp/catkin_generated/installspace/webappConfig.cmake"
-    "/home/pi/Github/Dexter_ROS/build/webapp/catkin_generated/installspace/webappConfig-version.cmake"
+    "/home/pi/Github/tommy_bot/build/webapp/catkin_generated/installspace/webappConfig.cmake"
+    "/home/pi/Github/tommy_bot/build/webapp/catkin_generated/installspace/webappConfig-version.cmake"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/webapp" TYPE FILE FILES "/home/pi/Github/Dexter_ROS/src/webapp/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/webapp" TYPE FILE FILES "/home/pi/Github/tommy_bot/src/webapp/package.xml")
 endif()
 

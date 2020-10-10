@@ -1,5 +1,5 @@
-libdir=/home/pi/Github/Dexter_ROS/install/lib
-includedir=/home/pi/Github/Dexter_ROS/install/include
+libdir=/home/pi/Github/tommy_bot/install/lib
+includedir=/home/pi/Github/tommy_bot/install/include
 
 Name: gtest_main
 Description: GoogleTest (with main() function)

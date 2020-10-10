@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/pi/Github/Dexter_ROS/src
+CMAKE_SOURCE_DIR = /home/pi/Github/tommy_bot/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/pi/Github/Dexter_ROS/build
+CMAKE_BINARY_DIR = /home/pi/Github/tommy_bot/build
 
 # Utility rule file for rosgraph_msgs_generate_messages_eus.
 
@@ -63,10 +63,10 @@ administrator/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/build: rosgraph
 .PHONY : administrator/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/build
 
 administrator/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/clean:
-	cd /home/pi/Github/Dexter_ROS/build/administrator && $(CMAKE_COMMAND) -P CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/cmake_clean.cmake
+	cd /home/pi/Github/tommy_bot/build/administrator && $(CMAKE_COMMAND) -P CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/cmake_clean.cmake
 .PHONY : administrator/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/clean
 
 administrator/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/depend:
-	cd /home/pi/Github/Dexter_ROS/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/pi/Github/Dexter_ROS/src /home/pi/Github/Dexter_ROS/src/administrator /home/pi/Github/Dexter_ROS/build /home/pi/Github/Dexter_ROS/build/administrator /home/pi/Github/Dexter_ROS/build/administrator/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/pi/Github/tommy_bot/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/pi/Github/tommy_bot/src /home/pi/Github/tommy_bot/src/administrator /home/pi/Github/tommy_bot/build /home/pi/Github/tommy_bot/build/administrator /home/pi/Github/tommy_bot/build/administrator/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : administrator/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/depend
 

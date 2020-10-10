@@ -1,8 +1,8 @@
-# Install script for directory: /home/pi/Github/Dexter_ROS/src/sensors
+# Install script for directory: /home/pi/Github/tommy_bot/src/sensors
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/pi/Github/Dexter_ROS/install")
+  set(CMAKE_INSTALL_PREFIX "/home/pi/Github/tommy_bot/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -38,17 +38,17 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/pi/Github/Dexter_ROS/build/sensors/catkin_generated/installspace/sensors.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/pi/Github/tommy_bot/build/sensors/catkin_generated/installspace/sensors.pc")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/sensors/cmake" TYPE FILE FILES
-    "/home/pi/Github/Dexter_ROS/build/sensors/catkin_generated/installspace/sensorsConfig.cmake"
-    "/home/pi/Github/Dexter_ROS/build/sensors/catkin_generated/installspace/sensorsConfig-version.cmake"
+    "/home/pi/Github/tommy_bot/build/sensors/catkin_generated/installspace/sensorsConfig.cmake"
+    "/home/pi/Github/tommy_bot/build/sensors/catkin_generated/installspace/sensorsConfig-version.cmake"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/sensors" TYPE FILE FILES "/home/pi/Github/Dexter_ROS/src/sensors/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/sensors" TYPE FILE FILES "/home/pi/Github/tommy_bot/src/sensors/package.xml")
 endif()
 
