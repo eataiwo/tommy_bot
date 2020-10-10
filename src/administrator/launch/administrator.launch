@@ -1,0 +1,6 @@
+<launch>
+
+    <node name="administrator" pkg="administrator" type="admin.py" />
+    <node name="voice" pkg="administrator" type="voice.py" />
+
+</launch>
