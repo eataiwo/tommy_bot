@@ -10,15 +10,18 @@ import sys
 # sys.path.append("")
 
 import rospy
-from std_msgs.msg import Float64, Header
-from numpy import deg2rad
-from sensor.msgs.msg import Imu, MagneticField, Temperature
+import numpy as np
+from std_msgs.msg import Header 
+from geometry_msgs.msg import Vector3
+from sensor_msgs.msg import Imu, MagneticField, Temperature
 from mpu9250_jmdev.registers import *
 from mpu9250_jmdev.mpu_9250 import MPU9250
+import dynamic_reconfigure.client
 
 # For covariance I would need to implement an Extended Kalman Filter or something.
 
 g =  9.80665
+# deg2rad = 3.14159265359/180
 
 # Create
 mpu = MPU9250(
@@ -33,6 +36,9 @@ mpu = MPU9250(
 
 
 # Configure
+mpu.configure()  # Apply the settings to the registers.
+# mpu.calibrateMPU6500()
+mpu.calibrateAK8963()
 mpu.configure()  # Apply the settings to the registers.
 
 # Calibrate
@@ -68,7 +74,7 @@ mpu.configure()  # Apply the settings to the registers.
 #
 #     time.sleep(1)
 
-rospy.init_node('MPU9250')
+rospy.init_node('mpu9250')
 rate = rospy.Rate(60)
 
 imu_msg = Imu()
@@ -76,18 +82,34 @@ mag_msg = MagneticField()
 temp_msg = Temperature()
 header = Header()
 
+acc = Vector3()
+ang_v = Vector3()
+mag = Vector3()
+
 temp_pub = rospy.Publisher('sensors/imu_temperature', Temperature, queue_size=10)
-imu_pub = rospy.Publisher('imu/data_raw', Imu, queue_size=10)
-mag_pub = rospy.Publisher('imu/mag', MagneticField, queue_size=10)
+imu_pub = rospy.Publisher('sensors/imu/data_raw', Imu, queue_size=10)
+mag_pub = rospy.Publisher('sensors/imu/mag', MagneticField, queue_size=10)
+
+client = dynamic_reconfigure.client.Client('ImuFilter')
+mbias = mpu.mbias # Get magnetometer hard iron distortion
+print(mbias)
+params = {'mag_bias_x' : mbias[0], 'mag_bias_y' : mbias[1],'mag_bias_z' : mbias[2]}   
+config = client.update_configuration(params)
 
 while not rospy.is_shutdown():
 
     header.stamp = rospy.Time.now()
     header.frame_id = 'tommy'
-
-    imu_msg.linear_acceleration= mpu.readAccelerometerMaster*g
-    imu_msg.angular_velocity = deg2rad(mpu.readGyroscopeMaster())
-    mag_msg.magnetic_field = mpu.readMagnetometerMaster()
+    
+    acc.x, acc.y, acc.z = np.array(mpu.readAccelerometerMaster())*g
+    imu_msg.linear_acceleration = acc
+    
+    ang_v.x, ang_v.y, ang_v.z = np.deg2rad(mpu.readGyroscopeMaster())
+    imu_msg.angular_velocity = ang_v
+    
+    mag.x, mag.y, mag.z =  mpu.readMagnetometerMaster()
+    mag_msg.magnetic_field = mag
+    
     temp_msg.temperature = mpu.readTemperatureMaster()
 
     imu_msg.header = mag_msg.header = temp_msg.header = header

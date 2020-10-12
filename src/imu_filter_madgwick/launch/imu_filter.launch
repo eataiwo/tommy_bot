@@ -1,0 +1,5 @@
+<launch>
+
+    <node name="ImuFilter" pkg="imu_filter_madgwick" type="imu_filter_node" />
+
+</launch>

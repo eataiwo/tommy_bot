@@ -136,6 +136,7 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   include("/home/pi/Github/tommy_bot/build/peripherals/cmake_install.cmake")
   include("/home/pi/Github/tommy_bot/build/powertrain/cmake_install.cmake")
   include("/home/pi/Github/tommy_bot/build/sensors/cmake_install.cmake")
+  include("/home/pi/Github/tommy_bot/build/imu_filter_madgwick/cmake_install.cmake")
   include("/home/pi/Github/tommy_bot/build/webapp/cmake_install.cmake")
 
 endif()
