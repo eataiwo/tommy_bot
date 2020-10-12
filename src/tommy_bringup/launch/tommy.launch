@@ -4,5 +4,7 @@
    <include file="$(find webapp)/launch/webapp.launch"/>
    <include file="$(find administrator)/launch/administrator.launch"/>
    <include file="$(find peripherals)/launch/peripherals.launch"/>
+   <include file="$(find sensors)/launch/sensors.launch"/>
+   <include file="$(find imu_filter_madgwick)/launch/imu_filter.launch"/>
 
 </launch>
