@@ -57,8 +57,7 @@ if __name__ == "__main__":
         hum_msg.relative_humidity = hum_msg.relative_humidity/100
         header.stamp = rospy.Time.now()
         header.frame_id = 'tommy'
-        hum_msg.header = header
-        temp_msg.header=header
+        hum_msg.header = temp_msg.header = header
         dht22.hum_pub.publish(hum_msg)
-        dht22.temp_pub.publish(Alan temp_msg)
+        dht22.temp_pub.publish(temp_msg)
         rospy.sleep(2)
