@@ -26,13 +26,13 @@
 
 import Adafruit_DHT
 import rospy
-from time import sleep
-from std_msgs.msg import Float64
+from std_msgs.msg import Header
+from sensor_msgs.msg import Temperature, RelativeHumidity
 
 SENSOR_PIN = 13
-temp_msg = Float64()
-hum_msg = Float64()
-
+temp_msg = Temperature()
+hum_msg = RelativeHumidity()
+header = Header()
 
 class Dht22:
     def __init__(self, pin=SENSOR_PIN):
@@ -53,7 +53,9 @@ if __name__ == "__main__":
     while not rospy.is_shutdown():
         dht22 = Dht22()
         rospy.sleep(2)
-        hum_msg.data, temp_msg.data = dht22.read()
+        hum_msg.relative_humidity , temp_msg.temperature = dht22.read()
+        header.stamp = rospy.Time.now()
+        header.frame_id = 'tommy'
         dht22.hum_pub.publish(hum_msg)
         dht22.temp_pub.publish(temp_msg)
         rospy.sleep(5)
