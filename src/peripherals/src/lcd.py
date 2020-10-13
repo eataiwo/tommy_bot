@@ -124,6 +124,7 @@ class Lcd:
 
     def cb_current_mode(self, msg):
         self.robot_mode = msg.data
+        self.lcd_string(f'Mode: {self.robot_mode}', LCD_LINE_1)
 
 
 if __name__ == '__main__':
