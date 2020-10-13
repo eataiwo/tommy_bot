@@ -15,10 +15,16 @@ Numbering/Naming convention for wheels on Dexter
 
 import sys
 import RPi.GPIO as GPIO
+import numpy as np
 from time import sleep
 import rospy
-from utils import stepdelay_check, speed_check, dist_2_steps, percent_to_stepdelay, stepdelay_to_percent, deg_2_steps
-from std_msgs.msg import Float64, String, Bool
+from utils import stepdelay_check, speed_check, dist_2_steps, percent_to_stepdelay, stepdelay_to_percent, deg_2_steps, steps_2_dist, steps_2_deg
+from std_msgs.msg import Float64, String, Bool, Header 
+from geometry_msgs.msg import Vector3, Twist, TwistWithCovariance, Pose, PoseWithCovariance, TransformStamped, Quaternion
+from sensor_msgs.msg import Imu
+from nav_msgs.msg import Odometry
+import tf_conversions
+import tf2_ros
 
 # Stepper motors are wired so all motors rotate its wheel forward when set to clockwise. i.e. the motors
 # on the left hand side are wired with the opposite direction pins to the motors on the right hand side.
@@ -72,6 +78,18 @@ class Powertrain:
         self.stepdelay = ''
         self.obstacle = False
         self.pwr_save = True
+        self.location = [0, 0, 0]  # meters 
+        self.orientation = [0, 0, 0]  # deg (yaw, pitch, roll)
+        self.orientation_q = [0, 0, 0, 0] # Quaternion()
+        self.linear_acceleration = [0, 0, 0]
+        self.last_linear_acceleration = [0, 0, 0]
+        self.angular_velocity = [0, 0, 0]
+        self.linear_velocity = [0, 0, 0]
+        self.imu_timestamp = None
+        self.last_imu_timestamp = None
+        self.header = Header()
+        self.odometry_msg = Odometry()
+        self.odom_trans = TransformStamped()
 
         self.powertrain_speed_subscriber = rospy.Subscriber("/powertrain/speed", Float64, self.cb_set_speed,
                                                             queue_size=10)
@@ -81,6 +99,12 @@ class Powertrain:
                                                             queue_size=10)
         self.powertrain_obstacle_subscriber = rospy.Subscriber("/sensors/ranging_FC", Float64,
                                                                self.cb_detect_obstacle, queue_size=10)
+        self.imu_subscriber = rospy.Subscriber("/sensors/imu/data", Imu ,
+                                                               self.cb_imu, queue_size=10)
+        
+        self.odom_pub = rospy.Publisher('powertrain/odometry', Odometry, queue_size=30)
+        
+        self.br = tf2_ros.TransformBroadcaster()
 
     def cb_set_speed(self, msg):
         self.speed = msg.data
@@ -100,6 +124,10 @@ class Powertrain:
         else:
             self.obstacle = False
             # rospy.loginfo(f'No obstacle range is {msg.data}')  # For debugging
+    def cb_imu(self, msg):
+        self.linear_acceleration = msg.linear_acceleration
+        self.angular_velocity = msg.angular_velocity
+        self.imu_timestamp = msg.header.stamp
 
     def go(self, direction, distance, speed=0, initdelay=.05, verbose=False):
         """
@@ -227,13 +255,104 @@ class Powertrain:
         GPIO.setup(self.step_pins, GPIO.OUT)
         GPIO.setup(self.enable_pin, GPIO.OUT)
         GPIO.output(self.enable_pin, True)
-
+    
+    def get_pose(self, steps):    
+        # So if I have rotated by an angle theta when going forward relative to the robot it is actually going an components forward and a componenet sideways relative to the orginal 
+        # co-ordinate system. Therefore I have to take into account linear motion based on theta. Cases to consider theta = 0, 30, 45, 90, 180, 270, 360, 720.
+        
+        #Update on the above, I believe this is the whole point of the odom base_link tf module thing. 
+            
+        if self.direction == 'forward':
+            distance = steps_2_dist(steps)
+            self.location[0] += distance
+        elif self. direction == 'backward':
+            distance = steps_2_dist(steps)
+            self.location[0] -= distance
+        elif self.direction == 'left': 
+            distance = steps_2_dist(steps)
+            self.location[1] -= distance
+        elif self.direction == 'right':
+            distance = steps_2_dist(steps)
+            self.location[1] += distance
+        elif self.direction == 'cw':
+            turn = steps_2_deg(steps)
+            self.orientation[0] += turn
+            self.orientation_q = tf_conversions.transformations.quaternion_from_euler(0 ,0 ,self.orientation[0])
+        elif self.direction == 'ccw':
+            turn = steps_2_deg(steps)
+            self.orientation[0] -= turn
+            self.orientation_q = tf_conversions.transformations.quaternion_from_euler(0 ,0 ,self.orientation[0])
+        else:
+            pass  #  print error about not being able to update odometry
+        
+    def get_twist(self):
+        
+        if self.last_imu_timestamp != None:
+            
+            dt = (self.imu_timestamp - self.last_imu_timestamp).to_sec()
+        
+            self.linear_velocity[0] += dt*((self.last_linear_acceleration.x+self.linear_acceleration.x)/2)
+            self.linear_velocity[1] += dt*((self.last_linear_acceleration.y+self.linear_acceleration.y)/2)
+            self.linear_velocity[2] += dt*((self.last_linear_acceleration.z+self.linear_acceleration.z)/2)  # Do not need to delete/comment out eventually to save computational power
+        
+        self.last_imu_timestamp = self.imu_timestamp
+        self.last_linear_acceleration = self.linear_acceleration 
+        
+        
+    # def euler_to_quaternion(self, r): # Make hidden method with a underscore 
+        # (yaw, pitch, roll) = np.deg2rad([r[0], r[1], r[2]])
+        # qx = np.sin(roll/2) * np.cos(pitch/2) * np.cos(yaw/2) - np.cos(roll/2) * np.sin(pitch/2) * np.sin(yaw/2)
+        # qy = np.cos(roll/2) * np.sin(pitch/2) * np.cos(yaw/2) + np.sin(roll/2) * np.cos(pitch/2) * np.sin(yaw/2)
+        # qz = np.cos(roll/2) * np.cos(pitch/2) * np.sin(yaw/2) - np.sin(roll/2) * np.sin(pitch/2) * np.cos(yaw/2)
+        # qw = np.cos(roll/2) * np.cos(pitch/2) * np.cos(yaw/2) + np.sin(roll/2) * np.sin(pitch/2) * np.sin(yaw/2)
+        # return [qx, qy, qz, qw]
+    
+    def pub_odometry(self):
+        # Lets start with header
+        self.odometry_msg.header.stamp = self.imu_timestamp # Incase the imu values have been update this should have the timestamp from the data that will now be used. 
+        self.odometry_msg.header.frame_id = 'odom'
+        
+        # Pose
+        self.odometry_msg.pose.pose.position.x = self.location[0]
+        self.odometry_msg.pose.pose.position.y = self.location[1]
+        self.odometry_msg.pose.pose.position.z = 0
+        
+        self.odometry_msg.pose.pose.orientation.x = self.orientation_q[0]
+        self.odometry_msg.pose.pose.orientation.y = self.orientation_q[1]
+        self.odometry_msg.pose.pose.orientation.z = self.orientation_q[2]
+        self.odometry_msg.pose.pose.orientation.w = self.orientation_q[3]
+        
+        # Twist
+        self.odometry_msg.child_frame_id = 'base_link'
+        self.odometry_msg.twist.twist.linear.x = self.linear_acceleration.x
+        self.odometry_msg.twist.twist.linear.y = self.linear_acceleration.y
+        self.odometry_msg.twist.twist.angular.z = self.angular_velocity.z
+        
+        self.odom_pub.publish(self.odometry_msg)
+        
+        # Broadcast transformation
+        self.odom_trans.header.stamp = self.imu_timestamp
+        self.odom_trans.header.frame_id = 'odom'
+        self.odom_trans.child_frame_id = 'base_link'
+        self.odom_trans.transform.translation.x = self.location[0]
+        self.odom_trans.transform.translation.y = self.location[1]
+        self.odom_trans.transform.translation.z = 0.0
+        self.odom_trans.transform.rotation.x = self.orientation_q[0]
+        self.odom_trans.transform.rotation.y = self.orientation_q[1]
+        self.odom_trans.transform.rotation.z = self.orientation_q[2]
+        self.odom_trans.transform.rotation.w = self.orientation_q[3]
+        
+        self.br.sendTransform(self.odom_trans)
+        
 
 if __name__ == "__main__":
     rospy.init_node('powertrain')
 
     dexter = Powertrain()
     dexter.setup()
+    step_size = 1
+    
+
 
     while not rospy.is_shutdown():
         if dexter.drive:
@@ -248,7 +367,11 @@ if __name__ == "__main__":
 
             # Drive in direction commanded from webapp indefinitely
             while dexter.drive: # TODO: If the roslaunch sever is shutdown via keyboard interrupt while this loop is running it will generate a shutdown error, add additional rospy.is_shutdown() condition
-                dexter.go_steps(dexter.direction, 1, percent_to_stepdelay(dexter.speed, remote_speed_type), 0)
+                dexter.go_steps(dexter.direction, step_size, percent_to_stepdelay(dexter.speed, remote_speed_type), 0)
+                dexter.get_pose(step_size)
+                dexter.get_twist()
+                dexter.pub_odometry()
+                
         elif not dexter.drive:
             GPIO.output(dexter.step_pins, False)
             GPIO.output(dexter.direction_pins, False)
