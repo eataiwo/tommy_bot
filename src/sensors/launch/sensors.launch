@@ -1,5 +1,6 @@
 <launch>
 
     <node name="dht22" pkg="sensors" type="dht22.py" />
+    <node name="mpu9250" pkg="sensors" type="mpu9250.py" />
 
 </launch>
