@@ -1,6 +1,6 @@
 # Tommy_bot
 
-* Project and documentation in early development. Normally I would have a more polished product before adding it to GitHub however I am using GitHub as a way to sync my files between my laptop and RPi 4. I write my code on my laptop then run it on the RPi 4 (tommy) when I need to test it. Its not convenient to have a screen hooked up to a mobile robot and I am not a command line warrior yet so terminal text editors for lengthy coding is not ideal either and I haven't found another good way to keep files synchronised. I am open to alternatives workflows? 
+* Project and documentation in early development. Normally I would have a more polished product before adding it to GitHub however I am using GitHub as a way to sync my files between my laptop and RPi 4. I write my code on my laptop then run it on the RPi 4 (tommy) when I need to test it. Its not convenient to have a screen hooked up to a mobile robot and I am not a command line warrior yet so terminal text editors for lengthy coding is not ideal either and I haven't found another good way to keep files synchronised. I am open to alternatives workflows? *
 
 Tommy_bot is a mobile robot I am building for two main reasons: 
  - Learning robotics 
