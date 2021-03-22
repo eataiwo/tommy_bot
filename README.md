@@ -84,4 +84,3 @@ I did this so long ago I cannot remember all the steps I did to get dexter/tommy
 ## Setup
 
 ## Usage
-![Uploading image.png…]()
