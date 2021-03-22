@@ -1,16 +1,29 @@
 #!/usr/bin/env python
+
 """
 ==================================================
+Project: tommy_bot
 Author: TJ Taiwo
+Description: Script to define the powertrain class that handles the high-level control of the powertrain for tommy_bot
+this class is able to take commands from the 'webapp node' or 'navigation node' to control where tommy_bot goes.
 
-Projects Referenced:
+Projects referenced/used:
 RpiMotorLib (Gavin Lyons) - https://github.com/gavinlyonsrepo/RpiMotorLib
 gatoBot (Jorge Rancé) - https://github.com/jorgerance/gatoBot
 
 ==================================================
+Notes:
 Numbering/Naming convention for wheels on Dexter
 [1 , 2] [FL , FR]
 [3 , 4] [RL , RR]
+
+Stepper motors are wired so all motors rotate its wheel forward when set to clockwise. i.e. the motors
+on the left hand side are wired with the opposite direction pins to the motors on the right hand side.
+
+If I implement a one way connector on the stepper motors the above wiring implementation will no long be valid.
+If so I will need to change the wheel direction dictionary to accommodate this.
+
+==================================================
 """
 
 import sys
@@ -26,20 +39,18 @@ from nav_msgs.msg import Odometry
 import tf_conversions
 import tf2_ros
 
-# Stepper motors are wired so all motors rotate its wheel forward when set to clockwise. i.e. the motors
-# on the left hand side are wired with the opposite direction pins to the motors on the right hand side.
-
-# If I implement a one way connector on the stepper motors the above wiring implementation will no long be ideal
-# If so I will need to change it to accommodate this.
-
-
+# value of direction pins for the stepper drivers for global direction of tommy_bot
 wheel_directions = {'forward': (0, 0, 0, 0), 'backward': (1, 1, 1, 1),
               'left': (1, 0, 0, 1), 'right': (0, 1, 1, 0),
               'cw': (0, 1, 0, 1), 'ccw': (1, 0, 1, 0)}
 
-# TODO: Add these as ROS parameters
+# GPIO pins connected to the stepper drivers directions pins
 direction_pins = (27, 23, 19, 20)
+
+# GPIO pins connected to the stepper drivers step pins
 step_pins = (22, 24, 26, 21)
+
+# GPIO pin connected to the stepper drivers enable pins - all pins are connected to one GPIO pin
 enable_pin = 6
 
 class Powertrain:
@@ -72,6 +83,7 @@ class Powertrain:
         self.direction_pins = direction_pins
         self.step_pins = step_pins
         self.enable_pin = enable_pin
+        self.minimum_pulse_width = 0.001 # Smaller delay than can actually be achieved ...probably
         self.drive = False
         self.direction = ''
         self.speed = 80
@@ -91,19 +103,19 @@ class Powertrain:
         self.odometry_msg = Odometry()
         self.odom_trans = TransformStamped()
 
+        # TODO: Add custom message so we can combine speed and direction into one topic.
+        # Setup subscribers
         self.powertrain_speed_subscriber = rospy.Subscriber("/powertrain/speed", Float64, self.cb_set_speed,
-                                                            queue_size=10)
+                                                            queue_size=2)
         self.powertrain_direction_subscriber = rospy.Subscriber("/powertrain/direction", String,
-                                                                self.cb_set_direction, queue_size=10)
+                                                                self.cb_set_direction, queue_size=2)
         self.powertrain_drive_subscriber = rospy.Subscriber("/powertrain/drive", Bool, self.cb_drive,
-                                                            queue_size=10)
-        self.powertrain_obstacle_subscriber = rospy.Subscriber("/sensors/ranging_FC", Float64,
-                                                               self.cb_detect_obstacle, queue_size=10)
+                                                            queue_size=5)
         self.imu_subscriber = rospy.Subscriber("/sensors/imu/data", Imu ,
                                                                self.cb_imu, queue_size=10)
-        
-        self.odom_pub = rospy.Publisher('powertrain/odometry', Odometry, queue_size=30)
-        
+        self.odom_pub = rospy.Publisher('powertrain/odometry', Odometry, queue_size=10)
+
+        # Setup transform broadcaster
         self.br = tf2_ros.TransformBroadcaster()
 
     def cb_set_speed(self, msg):
@@ -123,7 +135,7 @@ class Powertrain:
             # rospy.loginfo('Obstacle detected')  # For debugging
         else:
             self.obstacle = False
-            # rospy.loginfo(f'No obstacle range is {msg.data}')  # For debugging
+            # rospy.loginfo(f'No obstacle2 range is {msg.data}')  # For debugging
     def cb_imu(self, msg):
         self.linear_acceleration = msg.linear_acceleration
         self.angular_velocity = msg.angular_velocity
@@ -182,7 +194,7 @@ class Powertrain:
         try:
             for i in range(steps):
                 GPIO.output(self.step_pins, True)
-                sleep(stepdelay)
+                sleep(self.minimum_pulse_width) # Minimum pulse width
                 GPIO.output(self.step_pins, False)
                 sleep(stepdelay)
                 if verbose:
@@ -366,7 +378,7 @@ if __name__ == "__main__":
             GPIO.output(dexter.enable_pin, False)
 
             # Drive in direction commanded from webapp indefinitely
-            while dexter.drive: # TODO: If the roslaunch sever is shutdown via keyboard interrupt while this loop is running it will generate a shutdown error, add additional rospy.is_shutdown() condition
+            while not rospy.is_shutdown and dexter.drive:
                 dexter.go_steps(dexter.direction, step_size, percent_to_stepdelay(dexter.speed, remote_speed_type), 0)
                 dexter.get_pose(step_size)
                 dexter.get_twist()
