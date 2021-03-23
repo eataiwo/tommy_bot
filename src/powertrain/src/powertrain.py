@@ -194,7 +194,7 @@ class Powertrain:
         try:
             for i in range(steps):
                 GPIO.output(self.step_pins, True)
-                sleep(self.minimum_pulse_width) # Minimum pulse width
+                sleep(stepdelay) # Minimum pulse width
                 GPIO.output(self.step_pins, False)
                 sleep(stepdelay)
                 if verbose:
@@ -378,12 +378,11 @@ if __name__ == "__main__":
             GPIO.output(dexter.enable_pin, False)
 
             # Drive in direction commanded from webapp indefinitely
-            while not rospy.is_shutdown and dexter.drive:
+            while not rospy.is_shutdown() and dexter.drive:
                 dexter.go_steps(dexter.direction, step_size, percent_to_stepdelay(dexter.speed, remote_speed_type), 0)
-                dexter.get_pose(step_size)
-                dexter.get_twist()
-                dexter.pub_odometry()
-                
+               #dexter.get_pose(step_size)
+               #dexter.get_twist()
+               #dexter.pub_odometry()
         elif not dexter.drive:
             GPIO.output(dexter.step_pins, False)
             GPIO.output(dexter.direction_pins, False)
