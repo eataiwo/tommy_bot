@@ -276,11 +276,11 @@ class Powertrain:
             self.location[1] += distance
         elif self.direction == 'cw':
             turn = steps_2_deg(steps)
-            self.orientation[0] += turn
+            self.orientation[0] += turn  # I could get this from the imu/data topic but will need to test how accurate it is or do some sensor fusion. 
             self.orientation_q = tf_conversions.transformations.quaternion_from_euler(0 ,0 ,self.orientation[0])
         elif self.direction == 'ccw':
             turn = steps_2_deg(steps)
-            self.orientation[0] -= turn
+            self.orientation[0] -= turn 
             self.orientation_q = tf_conversions.transformations.quaternion_from_euler(0 ,0 ,self.orientation[0])
         else:
             pass  #  print error about not being able to update odometry
@@ -326,7 +326,7 @@ class Powertrain:
         self.odometry_msg.child_frame_id = 'base_link'
         self.odometry_msg.twist.twist.linear.x = self.linear_acceleration.x
         self.odometry_msg.twist.twist.linear.y = self.linear_acceleration.y
-        self.odometry_msg.twist.twist.angular.z = self.angular_velocity.z
+        self.odometry_msg.twist.twist.angular.z = self.angular_velocity.z 
         
         self.odom_pub.publish(self.odometry_msg)
         
