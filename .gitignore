@@ -140,3 +140,5 @@ dmypy.json
 /src/peripherals/src/archive
 /src/sensors/src/archive
 # /src/imu_filter_madgwick
+/build
+/devel
