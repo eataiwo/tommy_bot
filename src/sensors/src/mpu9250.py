@@ -37,8 +37,9 @@ mpu = MPU9250(
 
 # Configure
 mpu.configure()  # Apply the settings to the registers.
-# mpu.calibrateMPU6500()
+#mpu.calibrateMPU6500()
 mpu.calibrateAK8963()
+#mpu.calibrate()
 mpu.configure()  # Apply the settings to the registers.
 
 # Calibrate
@@ -99,7 +100,7 @@ config = client.update_configuration(params)
 while not rospy.is_shutdown():
 
     header.stamp = rospy.Time.now()
-    header.frame_id = 'tommy'
+    header.frame_id = 'imu'
     
     acc.x, acc.y, acc.z = np.array(mpu.readAccelerometerMaster())*g
     imu_msg.linear_acceleration = acc
